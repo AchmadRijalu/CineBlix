@@ -8,14 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var profilePresenter = ProfilePresenter()
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        HomeView().environmentObject(profilePresenter)
     }
 }
 
