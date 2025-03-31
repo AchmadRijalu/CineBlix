@@ -6,3 +6,13 @@
 //
 
 import Foundation
+import SwiftUI
+
+
+class DetailMovieRouter {
+    
+    
+    func createDetailMovieView() -> some View {
+        return DetailMovieView()
+    }
+}

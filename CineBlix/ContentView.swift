@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var profilePresenter = ProfilePresenter()
+    @EnvironmentObject var homePresenter: HomePresenter
     var body: some View {
-        HomeView().environmentObject(profilePresenter)
+        HomeView(homePresenter: homePresenter).environmentObject(profilePresenter)
     }
 }
 

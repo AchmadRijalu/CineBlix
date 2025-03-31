@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var profilePresenter: ProfilePresenter
+    @ObservedObject var homePresenter: HomePresenter
     
     @State var isProfileShowed: Bool = false
     var body: some View {
@@ -35,13 +36,25 @@ struct HomeView: View {
                                 Spacer()
                             }.foregroundStyle(.white).font(.system(size: 24, weight: .semibold)).padding(.bottom, 22)
                             VStack {
-                                ScrollView(.horizontal) {
-                                    LazyHStack(alignment: .center, spacing: 20) {
-                                        ForEach((1...10), id: \.self) { _ in
-                                            HomeListItemComponent()
+                                if homePresenter.loadingState {
+                                    VStack {
+                                      Text("Loading...")
+                                      ProgressView()
+                                    }.foregroundStyle(.white)
+                                }
+                                else {
+                                    ScrollView(.horizontal) {
+                                        LazyHStack(alignment: .center, spacing: 20) {
+                                            ForEach(self.homePresenter.movieNowPlayingList, id: \.id) { movies in
+                                                self.homePresenter.linkBuilder {
+                                                    HomeListItemComponent()
+                                                }
+                                                
+                                            }
                                         }
                                     }
                                 }
+                               
                             }.padding(.leading, 12).frame(maxWidth: .infinity, maxHeight: 200).padding(.leading, -20).padding(.bottom, 56)
                             
                             //MARK: - Popular
@@ -53,7 +66,10 @@ struct HomeView: View {
                                 ScrollView(.horizontal) {
                                     LazyHStack(alignment: .center, spacing: 20) {
                                         ForEach((1...10), id: \.self) { _ in
-                                            HomeListItemComponent()
+                                            self.homePresenter.linkBuilder {
+                                                HomeListItemComponent()
+                                            }
+                                            
                                         }
                                     }
                                 }
@@ -65,9 +81,7 @@ struct HomeView: View {
                     .sheet(isPresented: $isProfileShowed) {
                         profilePresenter.navigateToProfile {}
                     }
-                    
                 }
-                
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -97,12 +111,14 @@ struct HomeView: View {
                     .clipShape(Circle()).tint(.black)
                 }
             }
+        }.onAppear {
+            self.homePresenter.getNowPlayingMovie()
         }
         
         
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView(homePresenter: HomePresenter(homeUseCase: <#any HomeUseCase#>))
+//}

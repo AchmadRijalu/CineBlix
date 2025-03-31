@@ -13,5 +13,6 @@ pod 'RealmSwift', '~>10'
 pod 'Kingfisher', '~> 7.0'
 pod 'SwiftyJSON', '~> 4.0'
 pod 'Swinject'
+pod 'SkeletonUI'
 
 end

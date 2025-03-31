@@ -6,18 +6,23 @@
 //
 
 
-import WebKit
 import SwiftUI
+import WebKit
 
+struct GeneralWebview: UIViewRepresentable {
+    var urlString: String
 
-struct ProfileWebview: UIViewRepresentable {
-    
-    var url: URL
     func makeUIView(context: Context) -> WKWebView {
-        return WKWebView()
+        WKWebView()
     }
+
     func updateUIView(_ webView: WKWebView, context: Context) {
+        guard let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) else {
+            return
+        }
+
         let request = URLRequest(url: url)
         webView.load(request)
     }
 }
+

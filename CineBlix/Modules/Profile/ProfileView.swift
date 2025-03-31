@@ -66,7 +66,7 @@ struct ProfileView: View {
                                 Spacer()
                             }
                         }.frame(maxWidth: .infinity).background(SwiftUI.Color("PrimaryColor"))
-                        ProfileWebview(url: URL(string: "https://www.linkedin.com/in/achmadrijalu/")!)
+                        GeneralWebview(urlString: "https://www.linkedin.com/in/achmadrijalu/")
                     }
             }
         }

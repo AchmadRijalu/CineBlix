@@ -9,7 +9,7 @@ import Foundation
 
 struct APICall{
     
-    static let baseUrl = "https://www.themealdb.com/api/json/v1/1/"
+    static let baseUrl = "https://api.themoviedb.org/3/movie"
     static var apiKey: String {
         return Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String ?? ""
     }
@@ -21,13 +21,15 @@ protocol Endpoint {
 
 enum Endpoints {
     enum Gets: Endpoint {
-        case moveList
+        case movieNowPlaying
+        case moviePopular
         case movieDetail
         
         public var url: String {
             switch self {
-            case .moveList: return ""
+            case .moviePopular: return "\(APICall.baseUrl)/popular"
             case .movieDetail: return ""
+            case .movieNowPlaying: return "\(APICall.baseUrl)/now_playing?api_key=\(APICall.apiKey)"
                 
             }
         }

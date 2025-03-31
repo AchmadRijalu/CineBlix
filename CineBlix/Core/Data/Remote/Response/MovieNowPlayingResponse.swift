@@ -1,18 +1,18 @@
 //
-//  MovieNowPlayingListModel.swift
+//  MovieResponse.swift
 //  CineBlix
 //
-//  Created by Achmad Rijalu on 01/10/24.
+//  Created by Achmad Rijalu on 12/12/24.
 //
 
-import Foundation
 
 
-struct MovieNowPlayingListModel: Decodable {
-    var dates: Dates?
+struct MovieNowPlayingResponse: Decodable {
+    var dates: DatesResponse?
     var page: Int?
-    var results: [MovieNowPlayingResult]?
-    var totalPages, totalResults: Int?
+    var results: [MovieNowPlayingResultResponse]?
+    var totalPages: Int?
+    var totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
         case dates, page, results
@@ -21,21 +21,23 @@ struct MovieNowPlayingListModel: Decodable {
     }
 }
 
-// MARK: - Dates
-struct Dates: Decodable {
-    var maximum, minimum: String?
+struct DatesResponse: Decodable {
+    var maximum: String?
+    var minimum: String?
 }
 
-// MARK: - Result
-struct MovieNowPlayingResult: Decodable {
+struct MovieNowPlayingResultResponse: Decodable {
     var adult: Bool?
     var backdropPath: String?
     var genreIDS: [Int]?
     var id: Int?
-    var originalLanguage: OriginalLanguage?
-    var originalTitle, overview: String?
+    var originalLanguage: String?
+    var originalTitle: String?
+    var overview: String?
     var popularity: Double?
-    var posterPath, releaseDate, title: String?
+    var posterPath: String?
+    var releaseDate: String?
+    var title: String?
     var video: Bool?
     var voteAverage: Double?
     var voteCount: Int?
@@ -55,4 +57,3 @@ struct MovieNowPlayingResult: Decodable {
         case voteCount = "vote_count"
     }
 }
-

@@ -1,15 +1,13 @@
 //
-//  MoviePopularListModel.swift
+//  MoviePopularResponse.swift
 //  CineBlix
 //
-//  Created by Achmad Rijalu on 01/10/24.
+//  Created by Achmad Rijalu on 16/12/24.
 //
-import Foundation
 
-// MARK: - MoviePopularListModel
-struct MoviePopularListModel: Codable {
+struct MoviePopularResponse: Codable {
     var page: Int?
-    var results: [MoviePopularResult]?
+    var results: [MovieResultResponse]?
     var totalPages, totalResults: Int?
 
     enum CodingKeys: String, CodingKey {
@@ -19,13 +17,12 @@ struct MoviePopularListModel: Codable {
     }
 }
 
-// MARK: - Result
-struct MoviePopularResult: Codable {
+struct MovieResultResponse: Codable {
     var adult: Bool?
     var backdropPath: String?
     var genreIDS: [Int]?
     var id: Int?
-    var originalLanguage: OriginalLanguage?
+    var originalLanguage: OriginalLanguagePopular?
     var originalTitle, overview: String?
     var popularity: Double?
     var posterPath, releaseDate, title: String?
@@ -49,3 +46,9 @@ struct MoviePopularResult: Codable {
     }
 }
 
+enum OriginalLanguagePopular: String, Codable {
+    case en = "en"
+    case es = "es"
+    case fr = "fr"
+    case hi = "hi"
+}
