@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct CompanyListItem: View {
     var companyImage: String?
@@ -13,9 +14,12 @@ struct CompanyListItem: View {
     var companyCountry: String?
     var body: some View {
         VStack {
-            Image("image-movie-default2").resizable().frame(width: 100, height: 100).clipShape(.circle).padding(.bottom, 12)
-            Text("Columbia Pictures").foregroundStyle(Color("SecondaryColor")).font(.subheadline).padding(.bottom, 4)
-            Text("US").foregroundStyle(Color("SecondaryColor")).font(.caption).font(Font.system(size: 12, weight: .semibold))
+            VStack {
+                KFImage.url(URL(string: Endpoints.Gets.image(imageFilePath: companyImage ?? "").url))
+                    .resizable().aspectRatio(contentMode: .fit).frame(width: 100)
+            }.padding().background(Color("WhiteColor")).clipped().clipShape(RoundedRectangle(cornerRadius: 12))
+            Text(companyName).foregroundStyle(Color("SecondaryColor")).font(.subheadline).padding(.bottom, 4)
+            Text(companyCountry).foregroundStyle(Color("SecondaryColor")).font(.caption).font(Font.system(size: 12, weight: .semibold))
         }.padding()
     }
 }

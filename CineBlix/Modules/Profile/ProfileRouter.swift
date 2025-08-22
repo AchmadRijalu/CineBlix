@@ -8,9 +8,7 @@
 import Foundation
 import SwiftUI
 
-
 class ProfileRouter {
-    
     func createProfileView() -> some View {
         return ProfileView()
     }

@@ -6,12 +6,17 @@
 //
 
 import Foundation
+import Alamofire
 
 struct APICall{
-    
     static let baseUrl = "https://api.themoviedb.org/3/movie"
+    static let baseImageUrl = "https://image.tmdb.org/t/p/w500"
     static var apiKey: String {
         return Bundle.main.object(forInfoDictionaryKey: "API_KEY") as? String ?? ""
+    }
+    
+    static var headers: HTTPHeaders {
+        return ["Accept": "application/json"]
     }
 }
 
@@ -21,16 +26,33 @@ protocol Endpoint {
 
 enum Endpoints {
     enum Gets: Endpoint {
-        case movieNowPlaying
-        case moviePopular
-        case movieDetail
+        case movieNowPlaying(page: Int)
+        case movieUpcoming(page: Int)
+        case moviePopular(page: Int)
+        case movieInfo(movieId: Int)
+        case movieVideo(movieId: Int)
+        case movieReview(movieId: Int)
+        case image(imageFilePath: String)
+        case movieTopRated(page: Int)
         
-        public var url: String {
+        var url: String {
             switch self {
-            case .moviePopular: return "\(APICall.baseUrl)/popular"
-            case .movieDetail: return ""
-            case .movieNowPlaying: return "\(APICall.baseUrl)/now_playing?api_key=\(APICall.apiKey)"
-                
+            case .movieNowPlaying(let page):
+                return "\(APICall.baseUrl)/now_playing?api_key=\(APICall.apiKey)&page=\(page)"
+            case .movieUpcoming(page: let page):
+                return "\(APICall.baseUrl)/upcoming?api_key=\(APICall.apiKey)&page=\(page)"
+            case .moviePopular(page: let page):
+                return "\(APICall.baseUrl)/popular?api_key=\(APICall.apiKey)&page=\(page)"
+            case .movieInfo(let movieId):
+                return "\(APICall.baseUrl)/\(movieId)?api_key=\(APICall.apiKey)"
+            case .image(let imageFilePath):
+                return "\(APICall.baseImageUrl)/\(imageFilePath)"
+            case .movieVideo(movieId: let movieId):
+                return "\(APICall.baseUrl)/\(movieId)/videos?api_key=\(APICall.apiKey)"
+            case .movieReview(movieId: let movieId):
+                return "\(APICall.baseUrl)/\(movieId)/reviews?api_key=\(APICall.apiKey)"
+            case .movieTopRated(let page):
+                return "\(APICall.baseUrl)/top_rated?api_key=\(APICall.apiKey)&page=\(page)"
             }
         }
     }

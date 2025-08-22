@@ -6,124 +6,83 @@
 //
 
 import SwiftUI
-import RxSwift
+import Combine
+import YouTubePlayerKit
+import Kingfisher
 
 struct DetailMovieView: View {
     @State var isFavorite: Bool = false
     @Environment(\.dismiss) private var dismiss
-    @State private var showMovieWebView = false
+    @State private var isShowMovieWebsite = false
+    @ObservedObject var detailMoviePresenter: DetailMoviePresenter
+    @State private var selectedContent: DetailMovieContent = .movieInfo
+    @State private var youTubePlayer = YouTubePlayer()
+    @State private var isDetailMovieInfoLoaded: Bool = false
+    @State private var isDetailMovieReviewsLoaded: Bool = false
+    
     var body: some View {
-        
         GeometryReader { geo in
             ZStack {
                 Color("PrimaryColor")
-                ScrollView {
-                    VStack {
-                        ZStack(alignment: .topLeading) {
-                            Image("image-movie-default2").resizable()
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image(systemName: "chevron.backward")
-                            }.buttonStyle(.borderedProminent).clipShape(.circle).tint(.white).foregroundStyle(.black).padding().padding(EdgeInsets(top: 28, leading: 10, bottom: 0, trailing: 0))
-                        }
-                    }.frame(maxWidth: .infinity, maxHeight: 240).background(.red).padding(.bottom, 12)
-                    HStack( content: {
-                        VStack {
-                            Rectangle().overlay {
-                                Image("image_example").resizable()
-                            }.frame(width: 100, height: 140).padding(.trailing, 8).cornerRadius(20).padding(.bottom, 8)
-                        }
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Text("Venom the Last Dance")
-                                    .font(Font.system(size: 20, weight: .medium))
-                                    .foregroundStyle(.white)
-                                    .padding(.top, 8)
-                                    .padding(.bottom, 8)
-                                    .multilineTextAlignment(.leading)
-                                Spacer()
-                            }
-                            HStack(alignment: .top) {
-                                Text("Genres:")
-                                    .font(.subheadline)
-                                    .frame(alignment: .leading)
-                                    .padding(.trailing, 8)
-                                
-                                Text("Action")
-                                    .font(.subheadline).fontWeight(.semibold)
-                            }
-                            HStack {
-                                Text("Release:")
-                                    .font(.subheadline)
-                                    .frame(minWidth: 0, alignment: .leading)
-                                    .padding(.trailing, 12)
-                                Text("2024-2-12")
-                                    .font(.subheadline)
-                                    .frame(minWidth: 0, alignment: .leading)
-                                Spacer()
-                            }
-                            
-                            HStack {
-                                Text("Language:")
-                                    .font(.subheadline)
-                                    .frame(minWidth: 0, alignment: .leading)
-                                    .padding(.trailing, 12)
-                                Text("en")
-                                    .font(.subheadline)
-                                    .frame(minWidth: 0, alignment: .leading)
-                                Spacer()
-                            }
-                            Spacer()
-                        }
-                        .foregroundColor(Color("SecondaryColor"))
-                        
-                    }).padding(.horizontal, 20).padding(.bottom, 16)
-                    GeneralButton {
-                        showMovieWebView = true
-                    } content: {
-                        HStack {
-                            Image(systemName: "globe")
-                            Text("Visit Official Website")
+                VStack {
+                    MovieVideoHeaderView(
+                        detailMoviePresenter: detailMoviePresenter,
+                        youTubePlayer: youTubePlayer
+                    ) {
+                        dismiss()
+                    } favoriteAction: {
+                        if let model = detailMoviePresenter.detailMovieModel {
+                            detailMoviePresenter.addMovieToFavorite(detailMovieModel: model)
                         }
                     }
-                    VStack {
-                        HStack{
-                            Text("Overview").foregroundStyle(.white).font(Font.system(size: 22, weight: .medium))
-                            
-                            Spacer()
-                        }.padding(.top, 12).padding(.bottom, 4).padding(.leading, 4)
-                        Text("Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.").foregroundStyle(Color("SecondaryColor")).font(.subheadline)
-                    }.padding(.horizontal, 12)
-                    VStack {
-                        HStack{
-                            Text("Production Companies").foregroundStyle(.white).font(Font.system(size: 22, weight: .medium))
-                            
-                            Spacer()
-                        }.padding(.top, 12).padding(.bottom, 4).padding(.leading, 4)
-                        ScrollView(.horizontal) {
-                            LazyHStack(alignment: .center, spacing: 20) {
-                                ForEach((1...10), id: \.self) { _ in
-                                    CompanyListItem()
-                                    
-                                }
+                    .onAppear {
+                        detailMoviePresenter.getDetailMovieVideos(movieId: detailMoviePresenter.movieId)
+                    }
+                    .onReceive(detailMoviePresenter.$detailMovieVideoModel) { newValue in
+                        let keys = newValue?.map { $0.movieVideoKey } ?? []
+                        if !keys.isEmpty {
+                            Task {
+                                try await youTubePlayer.load(source: .video(id: keys.first ?? ""))
                             }
                         }
-                        
-                    }.padding(.horizontal, 12)
-                    
-                    
+                    }
+                    Picker("Content", selection: $selectedContent) {
+                        ForEach(DetailMovieContent.allCases) { content in
+                            Text(content.title).tag(content)
+                        }
+                    }
+                    .pickerStyle(.segmented).padding(.bottom, 24).padding(.horizontal, 24)
+                    switch selectedContent {
+                    case .movieInfo:
+                        DetailMovieInfoSection(detailMoviePresenter: detailMoviePresenter, isShowMovieWebsite: $isShowMovieWebsite)
+                        .onAppear {
+                            if isDetailMovieInfoLoaded == false {
+                                detailMoviePresenter.getDetailMovie()
+                                self.isDetailMovieInfoLoaded = true
+                            }
+                        }
+                    case .movieReview:
+                        VStack {
+                            DetailmovieReviewSection(detailMoviePresenter: detailMoviePresenter).padding(.horizontal)
+                        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .onAppear {
+                                if isDetailMovieReviewsLoaded == false {
+                                    detailMoviePresenter.getDetailMovieReviews(movieId: detailMoviePresenter.movieId)
+                                    self.isDetailMovieReviewsLoaded = true
+                                }
+                            }
+                    }
                 }
-            }.sheet(isPresented: $showMovieWebView, content: {
+            }.sheet(isPresented: $isShowMovieWebsite, content: {
                 VStack {
                     HStack {
                         Image(systemName: "chevron.backward").foregroundColor(.white).padding(.leading, 12)
                         Text("Back").font(.system(.title3)).foregroundColor(.white).onTapGesture {
-                            showMovieWebView.toggle()
+                            isShowMovieWebsite.toggle()
                         }
                         Spacer()
                     }.padding(.top, 8)
-                    GeneralWebview(urlString: "https://venom.movie")
+                    GeneralWebview(urlString: detailMoviePresenter.detailMovieModel?.homePageLink ?? "")
                 }.background(Color("PrimaryColor"))
                 
             })
@@ -133,7 +92,65 @@ struct DetailMovieView: View {
     }
 }
 
+struct MovieVideoHeaderView: View {
+    @ObservedObject var detailMoviePresenter: DetailMoviePresenter
+    let youTubePlayer: YouTubePlayer
+    var dismissAction: () -> Void
+    var favoriteAction: () -> Void
+
+    var body: some View {
+        VStack {
+            ZStack(alignment: .topLeading) {
+                YouTubePlayerView(youTubePlayer) { state in
+                    switch state {
+                    case .idle:
+                        KFImage.url(
+                          URL(string: Endpoints.Gets.image(
+                            imageFilePath: detailMoviePresenter.detailMovieModel?.backdropPath ?? ""
+                          ).url)
+                        )
+                        .resizable()
+                        .frame(maxWidth: .infinity)
+                        .skeleton(with: detailMoviePresenter.loadingState, shape: .rectangle)
+                    case .ready:
+                        EmptyView()
+                    case .error:
+                        EmptyView()
+                    }
+                }
+                HStack {
+                    Button(action: dismissAction) {
+                        Image(systemName: "chevron.backward")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .clipShape(.circle)
+                    .tint(.white)
+                    .foregroundStyle(.black)
+                    .padding()
+                    .padding(.top, 32)
+
+                    Spacer()
+
+                    Button(action: favoriteAction) {
+                        Image(systemName: "bookmark")
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .clipShape(.circle)
+                    .tint(.white)
+                    .foregroundStyle(.black)
+                    .padding()
+                    .padding(.top, 32)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: 240)
+        .background(.clear)
+        .padding(.bottom, 12)
+    }
+}
+
 
 #Preview {
-    DetailMovieView()
+    var detailMovieUseCase = Injection.init().provideDetailMovie()
+    DetailMovieView(detailMoviePresenter: DetailMoviePresenter(detailMovieUseCase: detailMovieUseCase, movieId: 912649))
 }

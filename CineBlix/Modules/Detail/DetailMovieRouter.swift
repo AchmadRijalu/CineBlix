@@ -7,12 +7,20 @@
 
 import Foundation
 import SwiftUI
-
+import UIKit
 
 class DetailMovieRouter {
     
-    
-    func createDetailMovieView() -> some View {
-        return DetailMovieView()
+    func presentGeneralError(errorMessage: String) {
+         let bottomSheetTransitionDelegate = BottomSheetTransitionDelegate()
+        let sheetVC = APIErrorBottomSheet(image: UIImage(systemName: "exclamationmark.triangle"), title: "Ooopss.", message: errorMessage)
+        
+        sheetVC.modalPresentationStyle = .custom
+        sheetVC.transitioningDelegate = bottomSheetTransitionDelegate
+        
+        if let topVC = UIApplication.shared.topViewController() {
+            topVC.present(sheetVC, animated: true)
+        }
     }
 }
+

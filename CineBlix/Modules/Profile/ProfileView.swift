@@ -32,43 +32,30 @@ struct ProfileView: View {
                             .multilineTextAlignment(.center).foregroundColor(.white)
                     }.padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                     Spacer()
-                    Button(action: {
-                        SharedMethods().openEmailApp()}
-                    ){ Text("Contact Me")
-                            .foregroundColor(.black).fontWeight(.medium)
-                            .frame(width: UIScreen.main.bounds.width / 2)
-                            .padding()
-                            .background(SwiftUI.Color("GreenColor"))
-                            .cornerRadius(8)
-                    }
-                    Button(action: {
-                        showWebView.toggle()}
-                    ) { Text("Linkedin").fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .frame(width: UIScreen.main.bounds.width / 2)
-                            .padding()
-                            .background(SwiftUI.Color("BlueColor"))
-                            .cornerRadius(8)
-                    }
+                    HStack {
+                        GeneralButton(action: {
+                            SharedMethods().openEmailApp()
+                        }, content: {
+                            Text("Contact Me").fontWeight(.medium)
+                                    .foregroundColor(.black)
+                        }, color: Color("GreenColor"))
+                    }.padding(.horizontal, 24)
+                    HStack {
+                        GeneralButton(action: {
+                            showWebView.toggle()
+                        }, content: {
+                            Text("Personal Website").fontWeight(.medium)
+                                    .foregroundColor(Color("BlackColor"))
+                        }, color: Color(.white))
+                    }.padding(.horizontal, 24)
                     Spacer()
                 }.padding(.top, 12)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(SwiftUI.Color("PrimaryColor").edgesIgnoringSafeArea(.all))
                 .navigationTitle("About").navigationBarTitleDisplayMode(.inline)
                 .sheet(isPresented: $showWebView) {
-                    VStack {
-                        VStack {
-                            HStack {
-                                Image(systemName: "arrow.backward").foregroundColor(.white).padding(.leading, 12)
-                                Text("Back").font(.system(.title3)).foregroundColor(.white).onTapGesture {
-                                    showWebView.toggle()
-                                }
-                                Spacer()
-                            }
-                        }.frame(maxWidth: .infinity).background(SwiftUI.Color("PrimaryColor"))
-                        GeneralWebview(urlString: "https://www.linkedin.com/in/achmadrijalu/")
-                    }
-            }
+                    GeneralWebview(urlString: "https://www.achmadrijalu.com")
+                }
         }
     }
 }

@@ -7,13 +7,9 @@
 
 
 import Foundation
-import RxSwift
 import RealmSwift
 
 protocol LocaleDataSourceProtocol {
-    
-    func getPopularMovies() -> Observable<MoviePopularListModel>
-    func getNowPlayingMovies() -> Observable<[MovieNowPlayingResultModel]>
 }
 
 
@@ -27,17 +23,8 @@ class LocaleDataSource: NSObject {
     static let sharedInstance: (Realm?) -> LocaleDataSource = { realmInstance in
         return LocaleDataSource(realm: realmInstance)
     }
-    
 }
-
 
 extension LocaleDataSource: LocaleDataSourceProtocol {
     
-    func getPopularMovies() -> Observable<MoviePopularListModel> {
-        return .just(MoviePopularListModel())
-    }
-    
-    func getNowPlayingMovies() -> Observable<[MovieNowPlayingResultModel]> {
-        return .just( [])
-    }
 }
