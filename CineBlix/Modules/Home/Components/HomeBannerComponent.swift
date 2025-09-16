@@ -9,18 +9,17 @@ import SwiftUI
 import Kingfisher
 
 struct HomeBannerComponent: View {
+    var movieImage: String?
+    var isSkeleton: Bool = false
     
-    var imageName: String
-    var
     var body: some View {
-        VStack {
-            
+        ZStack {
             if isSkeleton {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color.gray.opacity(0.3))
                     .skeleton(
                         with: true,
-                        size: CGSize(width: 116, height: 160),
+                        size: CGSize(width: 335, height: 174),
                         animation: .pulse(
                             duration: 0.8,
                             delay: 0.2,
@@ -36,25 +35,19 @@ struct HomeBannerComponent: View {
                 )
                 .cacheOriginalImage()
                 .resizable()
+                .aspectRatio(contentMode: .fit)
                 .scaledToFill()
-                .frame(width: 116, height: 160)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
-                
-                Text("MovieDb \(String(format: "%.1f", movieRatings ?? 0))")
-                    .font(.system(size: 10))
-                    .foregroundColor(.white)
-                    .padding(4)
-                    .background(Color.black.opacity(0.6))
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                    .padding(6)
-                    .offset(x: 25, y: -50)
             }
-            Image("image_example").resizable().scaledToFill()
-        }.frame(width: 335, height: 174).cornerRadius(12)
+        }
+        .frame(width: 335, height: 174)
+        .cornerRadius(12)
+        .shadow(radius: 4)
     }
 }
 
+
 #Preview {
-    HomeBannerComponent(imageName: "")
+    HomeBannerComponent(movieImage: "")
 }

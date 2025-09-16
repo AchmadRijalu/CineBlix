@@ -23,42 +23,22 @@ struct HomeView: View {
                 Image("wave").resizable().frame(width: UIScreen.main.bounds.width).ignoresSafeArea()
                 GeometryReader { geo in
                     VStack {
-                        HStack {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.gray)
-                            TextField("Search movies...", text: $searchText)
-                                .textFieldStyle(PlainTextFieldStyle())
-                                .autocapitalization(.none)
-                                .disableAutocorrection(true)
-                        }
-                        .padding(10)
-                        .background(Color("SecondaryColor"))
-                        .cornerRadius(10)
-                        .padding(.horizontal)
-                        .foregroundColor(.black).padding(.vertical, 12)
                         ScrollView(showsIndicators: false){
                             BannerSectionView(homePresenter: homePresenter).onAppear {
                                 self.homePresenter.getTopRatetdMovie(page: 1)
                             }
                             NowPlaying(homePresenter: homePresenter)
-                                .onAppear {
-                                    self.homePresenter.getNowPlayingMovie(page: 1)
-                                }
                             UpcomingSection(homePresenter: homePresenter)
-                                .onAppear {
-                                    self.homePresenter.getUpComingMovie(page: 1)
-                                }
                             PopularSection(homePresenter: homePresenter)
-                                .onAppear {
-                                    self.homePresenter.getPopularMovie(page: 1)
-                                }
+
                         }.sheet(isPresented: $isProfileShowed) {
                             profilePresenter.navigateToProfile {}
                         }.fullScreenCover(isPresented: $showFavoriteSheet) {} content: {
                             self.homePresenter.navigateToFavoriteView()
                         }
                         
-                    }.padding(10).frame(maxWidth: geo.size.width, maxHeight:  geo.size.height)
+                    }
+                    .padding(10).frame(maxWidth: geo.size.width, maxHeight:  geo.size.height)
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
                                 Button {
@@ -89,6 +69,10 @@ struct HomeView: View {
                     }
                 }
             }
+        }.onAppear {
+            homePresenter.getNowPlayingMovie(page: 1)
+            homePresenter.getUpComingMovie(page: 1)
+            homePresenter.getPopularMovie(page: 1)
         }
     }
 }
@@ -96,18 +80,35 @@ struct HomeView: View {
 //MARK: - Banner
 struct BannerSectionView: View {
     @ObservedObject var homePresenter: HomePresenter
+    
     var body: some View {
         VStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(alignment: .center, spacing: 20) {
-                    ForEach((1...10), id: \.self) { _ in
-                        HomeBannerComponent(imageName: "a")
+            if homePresenter.topRatedLoadingState {
+                TabView {
+                    ForEach(0..<4, id: \.self) { _ in
+                        HomeBannerComponent(isSkeleton: true)
+                            .frame(width: UIScreen.main.bounds.width * 0.8) // smaller than screen
+                            .padding(.horizontal, 20) // spacing between banners
                     }
                 }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                .frame(height: 200)
+            } else {
+                TabView {
+                    ForEach(homePresenter.movieTopRatedResultmodel, id: \.id) { movie in
+                        HomeBannerComponent(movieImage: movie.posterPath)
+                            .frame(width: UIScreen.main.bounds.width * 0.8) // peek effect
+                            .padding(.horizontal, 20)
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                .frame(height: 200)
             }
-        }.frame(maxWidth: .infinity, maxHeight: 200).padding(.bottom, 24).padding(.top, 8)
+        }
     }
 }
+
+
 
 //MARK: - Now Playing
 struct NowPlaying: View {
@@ -123,7 +124,7 @@ struct NowPlaying: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 20) {
                         ForEach(0..<4, id: \.self) { _ in
-                            HomeListItemComponent(isSkeleton: true)
+                            HomeListItemComponent(isSkeleton: homePresenter.nowPlayingLoadingState)
                         }
                     }
                     .padding(.horizontal, 10)
@@ -162,11 +163,11 @@ struct UpcomingSection: View {
             Spacer()
         }.foregroundStyle(.white).font(.system(size: 20, weight: .semibold)).padding(.bottom, 12)
         VStack {
-            if homePresenter.nowPlayingLoadingState {
+            if homePresenter.upcomingLoadingState {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 20) {
                         ForEach(0..<4, id: \.self) { _ in
-                            HomeListItemComponent(isSkeleton: true)
+                            HomeListItemComponent(isSkeleton: homePresenter.upcomingLoadingState)
                         }
                     }
                     .padding(.horizontal, 10)
@@ -198,11 +199,11 @@ struct PopularSection: View {
             Spacer()
         }.foregroundStyle(.white).font(.system(size: 20, weight: .semibold)).padding(.bottom, 12)
         VStack {
-            if homePresenter.nowPlayingLoadingState {
+            if homePresenter.popularLoadingState {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 20) {
                         ForEach(0..<4, id: \.self) { _ in
-                            HomeListItemComponent(isSkeleton: true)
+                            HomeListItemComponent(isSkeleton: homePresenter.popularLoadingState)
                         }
                     }
                     .padding(.horizontal, 10)

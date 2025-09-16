@@ -22,7 +22,6 @@ class APIErrorBottomSheet: UIViewController {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .red
         imageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +34,6 @@ class APIErrorBottomSheet: UIViewController {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .black
-        label.backgroundColor = .green
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -46,7 +44,6 @@ class APIErrorBottomSheet: UIViewController {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .systemGray
-        label.backgroundColor = .yellow
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -87,20 +84,24 @@ extension APIErrorBottomSheet {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         
-        view.addSubview(verticalStackView)
-        
+        view.addSubview(dismissButton)
         NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 24),
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            dismissButton.widthAnchor.constraint(equalToConstant: 32),
+            dismissButton.heightAnchor.constraint(equalToConstant: 32)
+        ])
+        view.addSubview(verticalStackView)
+        NSLayoutConstraint.activate([
+            verticalStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
             verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             verticalStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
         ])
-        verticalStackView.addArrangedSubview(dismissButton)
+
         verticalStackView.addArrangedSubview(imageView)
         verticalStackView.addArrangedSubview(titleLabel)
         verticalStackView.addArrangedSubview(messageLabel)
-        
-        verticalStackView.setCustomSpacing(24, after: dismissButton)
+        verticalStackView.spacing = 12
     }
-
 }

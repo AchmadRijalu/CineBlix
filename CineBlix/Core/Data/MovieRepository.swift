@@ -15,7 +15,6 @@ protocol MovieRepositoryProtocol {
     func getTopRatedMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error>
 }
 
-
 final class MovieRepository: NSObject {
     
     typealias MovieInstance = (LocaleDataSource, HomeRemoteDataSource) -> MovieRepository

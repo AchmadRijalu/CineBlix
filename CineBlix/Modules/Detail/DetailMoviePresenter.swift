@@ -31,16 +31,17 @@ class DetailMoviePresenter: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     let movieId: Int
     
-    init(detailMovieUseCase: DetailMovieUseCase, movieId: Int) {
-        self.detailMovieUseCase = detailMovieUseCase
-        self.movieId = movieId
-    }
-    
     @Published var detailMovieModel: DetailMovieModel?
     @Published var detailMovieReviewModel: [DetailMovieReviewModel]?
     @Published var detailMovieVideoModel: [DetailMovieVideoModel]?
     @Published var errorMessage: String = ""
     @Published var loadingState: Bool = false
+    
+    init(detailMovieUseCase: DetailMovieUseCase, movieId: Int) {
+        self.detailMovieUseCase = detailMovieUseCase
+        self.movieId = movieId
+        getDetailMovie()
+    }
     
     func getDetailMovie() {
         loadingState = true

@@ -27,6 +27,11 @@ final class Injection: NSObject {
         
         return DetailMovieRepository.sharedInstance(remote, locale)
     }
+    
+    private func provideSearchMovieRepository() -> SearchMovieRepositoryProtocol {
+        let remote: SearchMovieRemoteDataSource = SearchMovieRemoteDataSource()
+        return SearchMovieRepository.sharedInstance(remote)
+    }
 
     func provideHome() -> HomeUseCase {
         let repository = provideMovieRepository()
@@ -38,4 +43,8 @@ final class Injection: NSObject {
         return DetailMovieInteractor(repository: repository)
     }
     
+    func provideSearchMovie() -> SearchMovieUserCase {
+        let repository = provideSearchMovieRepository()
+        return SearchMovieInteractor(repository: repository)
+    }
 }

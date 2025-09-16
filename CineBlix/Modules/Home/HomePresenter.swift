@@ -29,7 +29,6 @@ class HomePresenter: ObservableObject {
     }
     
     func getNowPlayingMovie(page: Int) {
-        guard movieNowPlayingResultsModel.isEmpty else { return }
         nowPlayingLoadingState = true
         homeUseCase.getNowPlayingMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
@@ -45,14 +44,14 @@ class HomePresenter: ObservableObject {
     }
     
     func getPopularMovie(page: Int) {
-        guard moviePopularResultsModel.isEmpty else {return}
         upcomingLoadingState = true
         homeUseCase.getPopularMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
             case .finished:
                 self.upcomingLoadingState = false
-            case .failure(let error):
+            case .failure(_):
                 self.errorMessage = String(describing: completion)
+                self.router.presentGeneralError(errorMessage: self.errorMessage)
             }
         } receiveValue: { movieModel in
             self.moviePopularResultsModel = movieModel
@@ -60,14 +59,14 @@ class HomePresenter: ObservableObject {
     }
     
     func getUpComingMovie(page: Int) {
-        guard movieUpcomingResultsModel.isEmpty else {return}
         popularLoadingState = true
         homeUseCase.getUpcomingMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
             case .finished:
                 self.popularLoadingState = false
-            case .failure(let error):
+            case .failure(_):
                 self.errorMessage = String(describing: completion)
+                self.router.presentGeneralError(errorMessage: self.errorMessage)
             }
         } receiveValue: { movieModel in
             self.movieUpcomingResultsModel = movieModel
@@ -75,7 +74,6 @@ class HomePresenter: ObservableObject {
     }
     
     func getTopRatetdMovie(page: Int) {
-        guard movieTopRatedResultmodel.isEmpty else {return}
         topRatedLoadingState = true
         homeUseCase.getTopRatedMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
@@ -83,6 +81,7 @@ class HomePresenter: ObservableObject {
                 self.topRatedLoadingState = false
             case .failure(let error):
                 self.errorMessage = String(describing: completion)
+                self.router.presentGeneralError(errorMessage: self.errorMessage)
             }
         } receiveValue: { movieModel in
             self.movieTopRatedResultmodel = movieModel

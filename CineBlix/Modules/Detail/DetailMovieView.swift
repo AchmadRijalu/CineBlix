@@ -35,17 +35,6 @@ struct DetailMovieView: View {
                             detailMoviePresenter.addMovieToFavorite(detailMovieModel: model)
                         }
                     }
-                    .onAppear {
-                        detailMoviePresenter.getDetailMovieVideos(movieId: detailMoviePresenter.movieId)
-                    }
-                    .onReceive(detailMoviePresenter.$detailMovieVideoModel) { newValue in
-                        let keys = newValue?.map { $0.movieVideoKey } ?? []
-                        if !keys.isEmpty {
-                            Task {
-                                try await youTubePlayer.load(source: .video(id: keys.first ?? ""))
-                            }
-                        }
-                    }
                     Picker("Content", selection: $selectedContent) {
                         ForEach(DetailMovieContent.allCases) { content in
                             Text(content.title).tag(content)
@@ -55,12 +44,6 @@ struct DetailMovieView: View {
                     switch selectedContent {
                     case .movieInfo:
                         DetailMovieInfoSection(detailMoviePresenter: detailMoviePresenter, isShowMovieWebsite: $isShowMovieWebsite)
-                        .onAppear {
-                            if isDetailMovieInfoLoaded == false {
-                                detailMoviePresenter.getDetailMovie()
-                                self.isDetailMovieInfoLoaded = true
-                            }
-                        }
                     case .movieReview:
                         VStack {
                             DetailmovieReviewSection(detailMoviePresenter: detailMoviePresenter).padding(.horizontal)
@@ -86,9 +69,22 @@ struct DetailMovieView: View {
                 }.background(Color("PrimaryColor"))
                 
             })
-            //MARK: - Ignore safe area for top and bottom
             .ignoresSafeArea()
         }.background(Color("PrimaryColor")).navigationBarBackButtonHidden(true)
+            .onAppear {
+                detailMoviePresenter.getDetailMovie()
+                DispatchQueue.main.async {
+                    self.detailMoviePresenter.getDetailMovieVideos(movieId: detailMoviePresenter.movieId)
+                }
+            }
+            .onReceive(detailMoviePresenter.$detailMovieVideoModel) { newValue in
+                let keys = newValue?.map { $0.movieVideoKey } ?? []
+                if !keys.isEmpty {
+                    Task {
+                        try await youTubePlayer.load(source: .video(id: keys.first ?? ""))
+                    }
+                }
+            }
     }
 }
 
@@ -97,7 +93,7 @@ struct MovieVideoHeaderView: View {
     let youTubePlayer: YouTubePlayer
     var dismissAction: () -> Void
     var favoriteAction: () -> Void
-
+    
     var body: some View {
         VStack {
             ZStack(alignment: .topLeading) {
@@ -105,9 +101,9 @@ struct MovieVideoHeaderView: View {
                     switch state {
                     case .idle:
                         KFImage.url(
-                          URL(string: Endpoints.Gets.image(
-                            imageFilePath: detailMoviePresenter.detailMovieModel?.backdropPath ?? ""
-                          ).url)
+                            URL(string: Endpoints.Gets.image(
+                                imageFilePath: detailMoviePresenter.detailMovieModel?.backdropPath ?? ""
+                            ).url)
                         )
                         .resizable()
                         .frame(maxWidth: .infinity)
@@ -128,9 +124,9 @@ struct MovieVideoHeaderView: View {
                     .foregroundStyle(.black)
                     .padding()
                     .padding(.top, 32)
-
+                    
                     Spacer()
-
+                    
                     Button(action: favoriteAction) {
                         Image(systemName: "bookmark")
                     }

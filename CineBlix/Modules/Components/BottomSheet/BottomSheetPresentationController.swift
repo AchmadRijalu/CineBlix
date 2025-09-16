@@ -74,5 +74,3 @@ class BottomSheetTransitionDelegate: NSObject, UIViewControllerTransitioningDele
         return BottomSheetPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
-
-
