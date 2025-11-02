@@ -11,13 +11,13 @@ import RealmSwift
 final class Injection: NSObject {
     
     //MARK: - Repository Injection
-    private func provideMovieRepository() -> MovieRepositoryProtocol {
+    private func provideMovieRepository() -> HomeRepositoryProtocol {
         let realm = try? Realm()
         
-        let locale: LocaleDataSource = LocaleDataSource.sharedInstance(realm)
+        let locale: HomeLocaleDataSource = HomeLocaleDataSource.sharedInstance(realm)
         let remote: HomeRemoteDataSource = HomeRemoteDataSource.sharedInstance
         
-        return MovieRepository.sharedInstance(locale, remote)
+        return HomeRepository.sharedInstance(locale, remote)
     }
     
     private func provideDetailMovieRepository() -> DetailMovieRepositoryProtocol {
@@ -32,7 +32,13 @@ final class Injection: NSObject {
         let remote: SearchMovieRemoteDataSource = SearchMovieRemoteDataSource()
         return SearchMovieRepository.sharedInstance(remote)
     }
-
+    
+    private func provideFavoriteMovieRepository() -> FavoriteMovieRepositoryProtocol {
+        let realm = try? Realm()
+        let locale: FavoriteMovieLocaleDataSource = FavoriteMovieLocaleDataSource(realm: realm)
+        return FavoriteMovieRepository.sharedInstance(locale)
+    }
+    
     func provideHome() -> HomeUseCase {
         let repository = provideMovieRepository()
         return HomeInteractor(repository: repository)
@@ -46,5 +52,10 @@ final class Injection: NSObject {
     func provideSearchMovie() -> SearchMovieUserCase {
         let repository = provideSearchMovieRepository()
         return SearchMovieInteractor(repository: repository)
+    }
+    
+    func provideFavoriteMovie() -> FavoriteMovieUseCase {
+        let repository = provideFavoriteMovieRepository()
+        return FavoriteMovieInteractor(repository: repository)
     }
 }

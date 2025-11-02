@@ -34,42 +34,12 @@ class HomePresenter: ObservableObject {
             switch completion {
             case .finished:
                 self.nowPlayingLoadingState = false
-            case .failure(let error):
+            case .failure(_):
                 self.errorMessage = String(describing: completion)
                 self.router.presentGeneralError(errorMessage: self.errorMessage)
             }
         } receiveValue: { movieModel in
             self.movieNowPlayingResultsModel = movieModel
-        }.store(in: &cancellables)
-    }
-    
-    func getPopularMovie(page: Int) {
-        upcomingLoadingState = true
-        homeUseCase.getPopularMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
-            switch completion {
-            case .finished:
-                self.upcomingLoadingState = false
-            case .failure(_):
-                self.errorMessage = String(describing: completion)
-                self.router.presentGeneralError(errorMessage: self.errorMessage)
-            }
-        } receiveValue: { movieModel in
-            self.moviePopularResultsModel = movieModel
-        }.store(in: &cancellables)
-    }
-    
-    func getUpComingMovie(page: Int) {
-        popularLoadingState = true
-        homeUseCase.getUpcomingMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
-            switch completion {
-            case .finished:
-                self.popularLoadingState = false
-            case .failure(_):
-                self.errorMessage = String(describing: completion)
-                self.router.presentGeneralError(errorMessage: self.errorMessage)
-            }
-        } receiveValue: { movieModel in
-            self.movieUpcomingResultsModel = movieModel
         }.store(in: &cancellables)
     }
     
@@ -79,7 +49,7 @@ class HomePresenter: ObservableObject {
             switch completion {
             case .finished:
                 self.topRatedLoadingState = false
-            case .failure(let error):
+            case .failure(_):
                 self.errorMessage = String(describing: completion)
                 self.router.presentGeneralError(errorMessage: self.errorMessage)
             }
@@ -96,7 +66,10 @@ class HomePresenter: ObservableObject {
         }
     }
     
-    func navigateToFavoriteView() -> some View {
-        router.createFavoriteMovieView()
+    func navigateToFavoriteView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        NavigationLink(destination: router.createFavoriteMovieView()) {
+            content()
+            
+        }
     }
 }

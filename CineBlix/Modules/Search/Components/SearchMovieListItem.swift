@@ -8,7 +8,6 @@
 import SwiftUI
 import Kingfisher
 
-
 struct SearchMovieListItem: View {
     let movieImage: String?
     let movieTitle: String

@@ -17,29 +17,31 @@ class HomeRouter: NSObject {
     }
     
     func createFavoriteMovieView() -> some View {
-        return FavoriteView()
+        let favoriteMovieUseCase = Injection.init().provideFavoriteMovie()
+        let favoriteMoviePresenter = FavoritePresenter(useCase: favoriteMovieUseCase)
+        return FavoriteView(favoritePresenter: favoriteMoviePresenter).hideTabBar()
     }
     
     func presentGeneralError(errorMessage: String) {
-            guard !HomeRouter.isPresentingError else { return }
-            HomeRouter.isPresentingError = true
-
-            let bottomSheetTransitionDelegate = BottomSheetTransitionDelegate()
-            let sheetVC = APIErrorBottomSheet(
-                image: UIImage(systemName: "exclamationmark.triangle"),
-                title: "Error",
-                message: errorMessage
-            )
-            sheetVC.modalPresentationStyle = .custom
-            sheetVC.transitioningDelegate = bottomSheetTransitionDelegate
-
-            sheetVC.presentationController?.delegate = self
-
-            if let topVC = UIApplication.shared.topViewController(),
-               topVC.presentedViewController == nil {
-                topVC.present(sheetVC, animated: true)
-            }
+        guard !HomeRouter.isPresentingError else { return }
+        HomeRouter.isPresentingError = true
+        
+        let bottomSheetTransitionDelegate = BottomSheetTransitionDelegate()
+        let sheetVC = APIErrorBottomSheet(
+            image: UIImage(systemName: "exclamationmark.triangle"),
+            title: "Error",
+            message: errorMessage
+        )
+        sheetVC.modalPresentationStyle = .custom
+        sheetVC.transitioningDelegate = bottomSheetTransitionDelegate
+        
+        sheetVC.presentationController?.delegate = self
+        
+        if let topVC = UIApplication.shared.topViewController(),
+           topVC.presentedViewController == nil {
+            topVC.present(sheetVC, animated: true)
         }
+    }
 }
 
 extension HomeRouter: UIAdaptivePresentationControllerDelegate {
@@ -47,4 +49,3 @@ extension HomeRouter: UIAdaptivePresentationControllerDelegate {
         HomeRouter.isPresentingError = false
     }
 }
-

@@ -12,5 +12,6 @@ struct MovieResultModel: Equatable, Identifiable {
     let posterPath: String
     var title: String
     let voteAverage: Double
+    let addedAt: Date?
 }
 
