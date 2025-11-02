@@ -13,5 +13,6 @@ struct MovieResultModel: Equatable, Identifiable {
     var title: String
     let voteAverage: Double
     let addedAt: Date?
+    let backdropPath: String?
 }
 
