@@ -11,6 +11,9 @@ protocol DetailMovieRepositoryProtocol: AnyObject {
     func getDetailMovieInfo(movieId: Int) -> AnyPublisher<DetailMovieModel, Error>
     func getDetailMovieReviews(movieId: Int) -> AnyPublisher<[DetailMovieReviewModel], Error>
     func getDetailMovieTrailers(movieId: Int) -> AnyPublisher<[DetailMovieVideoModel], Error>
+    func addFavoriteMovie(movieResultModel: MovieResultModel) -> AnyPublisher<Bool, Error>
+    func removeFavoriteMovie(movieResult: MovieResultModel) -> AnyPublisher<Bool, Error>
+    func isFavoriteMovieExist(movieId: Int) -> AnyPublisher<Bool, Error>
 }
 
 class DetailMovieRepository {
@@ -31,6 +34,7 @@ class DetailMovieRepository {
 }
 
 extension DetailMovieRepository: DetailMovieRepositoryProtocol {
+    
     func getDetailMovieInfo(movieId: Int) -> AnyPublisher<DetailMovieModel, any Error> {
         return remoteDataSource.getDetailMovieInfo(movieId: movieId).map { response in
             DetailMovieMapper.mapDetailMovieResponseToModel(input: response)
@@ -47,5 +51,17 @@ extension DetailMovieRepository: DetailMovieRepositoryProtocol {
         return remoteDataSource.getDetailMovieVideos(movieId: movieId).map { response in
             DetailMovieMapper.mapDetailMovieVideoToModel(input: response)
         }.eraseToAnyPublisher()
+    }
+    
+    func addFavoriteMovie(movieResultModel: MovieResultModel) -> AnyPublisher<Bool, any Error> {
+        return localDataSource.addMovieToFavorite(movieResultModel).eraseToAnyPublisher()
+    }
+    
+    func removeFavoriteMovie(movieResult: MovieResultModel) -> AnyPublisher<Bool, any Error> {
+        return localDataSource.deleteMovieFromFavorite(movieResult).eraseToAnyPublisher()
+    }
+    
+    func isFavoriteMovieExist(movieId: Int) -> AnyPublisher<Bool, any Error> {
+        return localDataSource.isFavoriteMovieExist(movieId: movieId)
     }
 }

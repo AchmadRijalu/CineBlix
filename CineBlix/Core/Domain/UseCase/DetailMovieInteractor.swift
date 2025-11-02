@@ -11,6 +11,9 @@ protocol DetailMovieUseCase: AnyObject {
     func getDetailMovieInfo(movieId: Int) -> AnyPublisher<DetailMovieModel, Error>
     func getDetailMovieReviews(movieId: Int) -> AnyPublisher<[DetailMovieReviewModel], Error>
     func getDetailMovieVideos(movieId: Int) -> AnyPublisher<[DetailMovieVideoModel], Error>
+    func addFavoriteMovie(movieResultModel: MovieResultModel) -> AnyPublisher<Bool, Error>
+    func removeFavoriteMovie(movieResult: MovieResultModel) -> AnyPublisher<Bool, Error>
+    func isFavoriteMovieExist(movieId: Int) -> AnyPublisher<Bool, Error>
 }
 
 class DetailMovieInteractor: DetailMovieUseCase {
@@ -31,5 +34,17 @@ class DetailMovieInteractor: DetailMovieUseCase {
     
     func getDetailMovieVideos(movieId: Int) -> AnyPublisher<[DetailMovieVideoModel], any Error> {
         return repository.getDetailMovieTrailers(movieId: movieId)
+    }
+    
+    func addFavoriteMovie(movieResultModel: MovieResultModel) -> AnyPublisher<Bool, any Error> {
+        return repository.addFavoriteMovie(movieResultModel: movieResultModel)
+    }
+    
+    func removeFavoriteMovie(movieResult: MovieResultModel) -> AnyPublisher<Bool, any Error> {
+        return repository.removeFavoriteMovie(movieResult: movieResult)
+    }
+    
+    func isFavoriteMovieExist(movieId: Int) -> AnyPublisher<Bool, any Error> {
+        return repository.isFavoriteMovieExist(movieId: movieId)
     }
 }

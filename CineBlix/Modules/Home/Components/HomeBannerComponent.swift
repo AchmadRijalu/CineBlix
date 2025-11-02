@@ -35,8 +35,8 @@ struct HomeBannerComponent: View {
                 )
                 .cacheOriginalImage()
                 .resizable()
-                .aspectRatio(contentMode: .fit)
-                .scaledToFill()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 335, height: 174)
                 .clipped()
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             }

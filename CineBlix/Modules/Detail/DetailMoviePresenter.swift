@@ -36,11 +36,13 @@ class DetailMoviePresenter: ObservableObject {
     @Published var detailMovieVideoModel: [DetailMovieVideoModel]?
     @Published var errorMessage: String = ""
     @Published var loadingState: Bool = false
+    @Published var isFavorite: Bool = false
     
     init(detailMovieUseCase: DetailMovieUseCase, movieId: Int) {
         self.detailMovieUseCase = detailMovieUseCase
         self.movieId = movieId
-        getDetailMovie()
+        self.getDetailMovie()
+        self.getDetailMovieVideos(movieId: movieId)
     }
     
     func getDetailMovie() {
@@ -87,9 +89,58 @@ class DetailMoviePresenter: ObservableObject {
 
     }
     
-    func addMovieToFavorite(detailMovieModel: DetailMovieModel) {
-        
+    func toggleFavorite(detailMovieModel: DetailMovieModel) {
+        if isFavorite {
+            deleteMovieFromFavorite(detailMovieModel: detailMovieModel)
+        } else {
+            addMovieToFavorite(detailMovieModel: detailMovieModel)
+        }
     }
+    
+    func addMovieToFavorite(detailMovieModel: DetailMovieModel) {
+        let movieResultModel = MovieResultModel(
+            id: movieId,
+            posterPath: detailMovieModel.posterPath,
+            title: detailMovieModel.title,
+            voteAverage: detailMovieModel.voteAverage,
+            addedAt: Date()
+        )
+        
+        detailMovieUseCase.addFavoriteMovie(movieResultModel: movieResultModel).receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case .failure(let error) = completion {
+                    print("❌ Failed to add favorite:", error.localizedDescription)
+                }
+            }, receiveValue: { success in
+                self.isFavorite = true
+            })
+            .store(in: &cancellables)
+    }
+
+    func deleteMovieFromFavorite(detailMovieModel: DetailMovieModel) {
+        let movieResultModel = MovieResultModel(
+            id: movieId,
+            posterPath: detailMovieModel.posterPath,
+            title: detailMovieModel.title,
+            voteAverage: detailMovieModel.voteAverage,
+            addedAt: nil
+        )
+        
+        detailMovieUseCase.removeFavoriteMovie(movieResult: movieResultModel).receive(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                if case .failure(_) = completion {}
+            }, receiveValue: { success in
+                self.isFavorite = false
+            })
+            .store(in: &cancellables)
+    }
+    
+    func checkIsFavoriteMovie(movieId: Int) {
+        detailMovieUseCase.isFavoriteMovieExist(movieId: movieId).receive(on: DispatchQueue.main).sink { _ in } receiveValue: { isFavorite in
+            self.isFavorite = isFavorite
+        }.store(in: &cancellables)
+    }
+
 }
 
 extension DetailMoviePresenter {

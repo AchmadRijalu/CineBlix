@@ -14,7 +14,7 @@ struct DetailMovieView: View {
     @State var isFavorite: Bool = false
     @Environment(\.dismiss) private var dismiss
     @State private var isShowMovieWebsite = false
-    @ObservedObject var detailMoviePresenter: DetailMoviePresenter
+    @StateObject var detailMoviePresenter: DetailMoviePresenter
     @State private var selectedContent: DetailMovieContent = .movieInfo
     @State private var youTubePlayer = YouTubePlayer()
     @State private var isDetailMovieInfoLoaded: Bool = false
@@ -71,12 +71,6 @@ struct DetailMovieView: View {
             })
             .ignoresSafeArea()
         }.background(Color("PrimaryColor")).navigationBarBackButtonHidden(true)
-            .onAppear {
-                detailMoviePresenter.getDetailMovie()
-                DispatchQueue.main.async {
-                    self.detailMoviePresenter.getDetailMovieVideos(movieId: detailMoviePresenter.movieId)
-                }
-            }
             .onReceive(detailMoviePresenter.$detailMovieVideoModel) { newValue in
                 let keys = newValue?.map { $0.movieVideoKey } ?? []
                 if !keys.isEmpty {
@@ -84,6 +78,8 @@ struct DetailMovieView: View {
                         try await youTubePlayer.load(source: .video(id: keys.first ?? ""))
                     }
                 }
+            }.onAppear {
+                detailMoviePresenter.checkIsFavoriteMovie(movieId: detailMoviePresenter.movieId)
             }
     }
 }
@@ -127,8 +123,11 @@ struct MovieVideoHeaderView: View {
                     
                     Spacer()
                     
-                    Button(action: favoriteAction) {
-                        Image(systemName: "bookmark")
+                    Button(action: {
+                        guard let detailMovieModel = detailMoviePresenter.detailMovieModel else { return }
+                        detailMoviePresenter.toggleFavorite(detailMovieModel: detailMovieModel)
+                    }) {
+                        Image(systemName: detailMoviePresenter.isFavorite ? "bookmark.fill" : "bookmark")
                     }
                     .buttonStyle(.borderedProminent)
                     .clipShape(.circle)
