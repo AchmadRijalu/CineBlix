@@ -13,6 +13,7 @@ class MovieEntity: Object {
     @objc dynamic var title: String = ""
     @objc dynamic var posterPath: String = ""
     @objc dynamic var voteAverage: Double = 0
+    @objc dynamic var backdropPath: String = ""
     
     override class func primaryKey() -> String? {
         return "id"

@@ -103,7 +103,7 @@ class DetailMoviePresenter: ObservableObject {
             posterPath: detailMovieModel.posterPath,
             title: detailMovieModel.title,
             voteAverage: detailMovieModel.voteAverage,
-            addedAt: Date()
+            addedAt: Date(), backdropPath: detailMovieModel.backdropPath
         )
         
         detailMovieUseCase.addFavoriteMovie(movieResultModel: movieResultModel).receive(on: DispatchQueue.main)
@@ -123,7 +123,7 @@ class DetailMoviePresenter: ObservableObject {
             posterPath: detailMovieModel.posterPath,
             title: detailMovieModel.title,
             voteAverage: detailMovieModel.voteAverage,
-            addedAt: nil
+            addedAt: nil, backdropPath: detailMovieModel.backdropPath
         )
         
         detailMovieUseCase.removeFavoriteMovie(movieResult: movieResultModel).receive(on: DispatchQueue.main)

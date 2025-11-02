@@ -10,7 +10,7 @@ import Realm
 final class FavoriteMovieMapper {
     static func mapFavoriteMovieEntitytoDomain(_ entity: [FavoriteEntity]) -> [MovieResultModel] {
         return entity.map { favoriteEntity in
-            return MovieResultModel(id: favoriteEntity.id, posterPath: favoriteEntity.posterPath, title: favoriteEntity.title, voteAverage: favoriteEntity.voteAverage, addedAt: favoriteEntity.addedAt)
+            return MovieResultModel(id: favoriteEntity.id, posterPath: favoriteEntity.posterPath, title: favoriteEntity.title, voteAverage: favoriteEntity.voteAverage, addedAt: favoriteEntity.addedAt, backdropPath: favoriteEntity.backdropPath)
         }
     }
     

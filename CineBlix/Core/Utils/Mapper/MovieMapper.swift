@@ -13,7 +13,7 @@ final class MovieMapper {
         input movieResponses: [MoviesResultResponse]
     ) -> [MovieResultModel] {
         return movieResponses.map { response in
-            return MovieResultModel(id: response.id, posterPath: response.posterPath ?? "", title: response.title, voteAverage: response.voteAverage, addedAt: nil)
+            return MovieResultModel(id: response.id, posterPath: response.posterPath ?? "", title: response.title, voteAverage: response.voteAverage, addedAt: nil, backdropPath: response.backdropPath)
         }
     }
     
@@ -24,6 +24,7 @@ final class MovieMapper {
             movieEntity.posterPath = movieResponse.posterPath ?? ""
             movieEntity.title = movieResponse.title
             movieEntity.voteAverage = movieResponse.voteAverage
+            movieEntity.backdropPath = movieResponse.backdropPath ?? ""
             return movieEntity
         }
     
@@ -31,7 +32,7 @@ final class MovieMapper {
     
     static func mapMovieEntityToDomains( input movieEntities: [MovieEntity]) -> [MovieResultModel] {
         return movieEntities.map { movieEntity in
-            return MovieResultModel(id: movieEntity.id, posterPath: movieEntity.posterPath, title: movieEntity.title, voteAverage: movieEntity.voteAverage, addedAt: nil)
+            return MovieResultModel(id: movieEntity.id, posterPath: movieEntity.posterPath, title: movieEntity.title, voteAverage: movieEntity.voteAverage, addedAt: nil, backdropPath: movieEntity.backdropPath)
         }
     }
 }

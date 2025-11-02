@@ -61,6 +61,7 @@ struct HomeView: View {
                 }
             }
         }.onAppear {
+            homePresenter.getTopRatetdMovie(page: 1)
             homePresenter.getNowPlayingMovie(page: 1)
         }
     }
@@ -85,7 +86,7 @@ struct BannerSectionView: View {
             } else {
                 TabView {
                     ForEach(homePresenter.movieTopRatedResultmodel, id: \.id) { movie in
-                        HomeBannerComponent(movieImage: movie.posterPath)
+                        HomeBannerComponent(movieImage: movie.backdropPath)
                             .frame(width: UIScreen.main.bounds.width * 0.85)
                             .padding(.horizontal, 15)
                     }
