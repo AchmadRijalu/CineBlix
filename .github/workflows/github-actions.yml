@@ -1,4 +1,4 @@
-name: Cineblix CI
+name: Cineblix Unit Test
 run-name: 🚀 ${{ github.actor }} pushed to ${{ github.ref }}
 
 on:
@@ -29,7 +29,7 @@ jobs:
           set -o pipefail
           xcodebuild \
             -project CineBlix.xcodeproj \
-            -scheme CineBlix \
+            -scheme CineBlixTest \
             -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
             clean test | xcpretty
 
