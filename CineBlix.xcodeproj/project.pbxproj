@@ -85,6 +85,23 @@
 		77F6C2812E728122008A6843 /* SearchMovieRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77F6C2802E728119008A6843 /* SearchMovieRemoteDataSource.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7793CD692EBF390E00E8A96E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 775612FE2B0E554100DC6BF4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 775613052B0E554100DC6BF4;
+			remoteInfo = CineBlix;
+		};
+		7793CD762EBF392600E8A96E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 775612FE2B0E554100DC6BF4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 775613052B0E554100DC6BF4;
+			remoteInfo = CineBlix;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		7799A1702E228B250021C2C2 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -141,6 +158,8 @@
 		777ACBF42B182CC3006DE143 /* Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injection.swift; sourceTree = "<group>"; };
 		777ACC042B183E69006DE143 /* APICall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICall.swift; sourceTree = "<group>"; };
 		778EBE322EA08A2600E4E7A4 /* FavoriteMovieMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMovieMapper.swift; sourceTree = "<group>"; };
+		7793CD652EBF390E00E8A96E /* HomePresenterTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HomePresenterTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7793CD722EBF392600E8A96E /* CineblixTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CineblixTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		77999FE72E2261B80021C2C2 /* GenreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreModel.swift; sourceTree = "<group>"; };
 		77999FEB2E226D7B0021C2C2 /* GenreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreResponse.swift; sourceTree = "<group>"; };
 		7799A0212E227ACE0021C2C2 /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
@@ -176,6 +195,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7740765C2E77F2FF000E8A8C /* CustomTabBar */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomTabBar; sourceTree = "<group>"; };
 		775ED9C32CD2284600E6E9CA /* Components */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Components; sourceTree = "<group>"; };
+		7793CD732EBF392600E8A96E /* CineblixTest */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CineblixTest; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +210,20 @@
 				77999FE42E225FED0021C2C2 /* SkeletonUI in Frameworks */,
 				77999FD92E211F050021C2C2 /* YouTubePlayerKit in Frameworks */,
 				77999FD32E211EE30021C2C2 /* Alamofire in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7793CD622EBF390E00E8A96E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7793CD6F2EBF392600E8A96E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				775613082B0E554100DC6BF4 /* CineBlix */,
+				7793CD732EBF392600E8A96E /* CineblixTest */,
 				775613072B0E554100DC6BF4 /* Products */,
 				7752A06B2CAB9D99007E1B3F /* SecureAPIKeys */,
 			);
@@ -300,6 +335,8 @@
 			isa = PBXGroup;
 			children = (
 				775613062B0E554100DC6BF4 /* CineBlix.app */,
+				7793CD652EBF390E00E8A96E /* HomePresenterTest.xctest */,
+				7793CD722EBF392600E8A96E /* CineblixTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -572,6 +609,49 @@
 			productReference = 775613062B0E554100DC6BF4 /* CineBlix.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7793CD642EBF390E00E8A96E /* HomePresenterTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7793CD6D2EBF390E00E8A96E /* Build configuration list for PBXNativeTarget "HomePresenterTest" */;
+			buildPhases = (
+				7793CD612EBF390E00E8A96E /* Sources */,
+				7793CD622EBF390E00E8A96E /* Frameworks */,
+				7793CD632EBF390E00E8A96E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7793CD6A2EBF390E00E8A96E /* PBXTargetDependency */,
+			);
+			name = HomePresenterTest;
+			packageProductDependencies = (
+			);
+			productName = HomePresenterTest;
+			productReference = 7793CD652EBF390E00E8A96E /* HomePresenterTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7793CD712EBF392600E8A96E /* CineblixTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7793CD782EBF392600E8A96E /* Build configuration list for PBXNativeTarget "CineblixTest" */;
+			buildPhases = (
+				7793CD6E2EBF392600E8A96E /* Sources */,
+				7793CD6F2EBF392600E8A96E /* Frameworks */,
+				7793CD702EBF392600E8A96E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7793CD772EBF392600E8A96E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7793CD732EBF392600E8A96E /* CineblixTest */,
+			);
+			name = CineblixTest;
+			packageProductDependencies = (
+			);
+			productName = CineblixTest;
+			productReference = 7793CD722EBF392600E8A96E /* CineblixTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -579,11 +659,20 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1500;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					775613052B0E554100DC6BF4 = {
 						CreatedOnToolsVersion = 15.0.1;
+					};
+					7793CD642EBF390E00E8A96E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 775613052B0E554100DC6BF4;
+					};
+					7793CD712EBF392600E8A96E = {
+						CreatedOnToolsVersion = 16.4;
+						LastSwiftMigration = 1640;
+						TestTargetID = 775613052B0E554100DC6BF4;
 					};
 				};
 			};
@@ -610,6 +699,8 @@
 			projectRoot = "";
 			targets = (
 				775613052B0E554100DC6BF4 /* CineBlix */,
+				7793CD642EBF390E00E8A96E /* HomePresenterTest */,
+				7793CD712EBF392600E8A96E /* CineblixTest */,
 			);
 		};
 /* End PBXProject section */
@@ -621,6 +712,20 @@
 			files = (
 				775613112B0E554200DC6BF4 /* Preview Assets.xcassets in Resources */,
 				7756130E2B0E554200DC6BF4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7793CD632EBF390E00E8A96E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7793CD702EBF392600E8A96E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,7 +805,34 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7793CD612EBF390E00E8A96E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7793CD6E2EBF392600E8A96E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7793CD6A2EBF390E00E8A96E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 775613052B0E554100DC6BF4 /* CineBlix */;
+			targetProxy = 7793CD692EBF390E00E8A96E /* PBXContainerItemProxy */;
+		};
+		7793CD772EBF392600E8A96E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 775613052B0E554100DC6BF4 /* CineBlix */;
+			targetProxy = 7793CD762EBF392600E8A96E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		775613122B0E554200DC6BF4 /* Debug */ = {
@@ -886,6 +1018,87 @@
 			};
 			name = Release;
 		};
+		7793CD6B2EBF390E00E8A96E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DYXBWDG6F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.achmadrijalu.HomePresenterTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CineBlix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CineBlix";
+			};
+			name = Debug;
+		};
+		7793CD6C2EBF390E00E8A96E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DYXBWDG6F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.achmadrijalu.HomePresenterTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CineBlix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CineBlix";
+			};
+			name = Release;
+		};
+		7793CD792EBF392600E8A96E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DYXBWDG6F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.achmadrijalu.CineblixTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CineblixTest/CineblixTest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CineBlix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CineBlix";
+			};
+			name = Debug;
+		};
+		7793CD7A2EBF392600E8A96E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DYXBWDG6F4;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.achmadrijalu.CineblixTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "CineblixTest/CineblixTest-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CineBlix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/CineBlix";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -903,6 +1116,24 @@
 			buildConfigurations = (
 				775613152B0E554200DC6BF4 /* Debug */,
 				775613162B0E554200DC6BF4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7793CD6D2EBF390E00E8A96E /* Build configuration list for PBXNativeTarget "HomePresenterTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7793CD6B2EBF390E00E8A96E /* Debug */,
+				7793CD6C2EBF390E00E8A96E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7793CD782EBF392600E8A96E /* Build configuration list for PBXNativeTarget "CineblixTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7793CD792EBF392600E8A96E /* Debug */,
+				7793CD7A2EBF392600E8A96E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
