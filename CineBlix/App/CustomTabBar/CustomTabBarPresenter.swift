@@ -9,4 +9,5 @@ import SwiftUI
 
 class CustomTabBarPresenter: ObservableObject {
     @Published var isHidden: Bool = false
+    var depthPage = 0
 }

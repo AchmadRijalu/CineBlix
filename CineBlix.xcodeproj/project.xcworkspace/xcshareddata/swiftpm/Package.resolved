@@ -1,5 +1,5 @@
 {
-  "originHash" : "57a3b1b438a19be12807d6f359e5fb482221156976c010dd72a1ad42886c0894",
+  "originHash" : "a28de4894a8f8ff3fa73f29f1ae56f95edb941e8ac5ee81a631ff374794c93d9",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
-        "branch" : "master",
-        "revision" : "5fcba6408c99eb3596bf5ae148bfc1a33b5adebd"
+        "revision" : "54eebd2b5e7a4a8055a7a8b55ac859a48462d722",
+        "version" : "10.54.5"
       }
     },
     {
