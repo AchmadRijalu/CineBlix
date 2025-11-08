@@ -23,6 +23,9 @@ jobs:
         run: |
           xcodebuild -resolvePackageDependencies -project CineBlix.xcodeproj
 
+      - name: List available schemes
+        run: xcodebuild -list -project CineBlix.xcodeproj
+
       - name: Run Unit Tests
         id: tests
         run: |
@@ -30,7 +33,7 @@ jobs:
           xcodebuild \
             -project CineBlix.xcodeproj \
             -scheme CineblixTest \
-            -destination 'generic/platform=iOS Simulator' \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
             clean test | xcpretty
 
       - name: Upload Test Results
