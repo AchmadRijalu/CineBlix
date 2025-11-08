@@ -32,9 +32,24 @@ final class HomePresenterTest: XCTestCase {
     func testGetNowPlayingMovieSuccess() {
         let expectation = XCTestExpectation(description: "Get now playing movies")
         let mockMovies = [
-            MovieResultModel(id: 1, title: "Test Movie 1", overview: "Test", posterPath: nil, backdropPath: nil, releaseDate: "2024-01-01", voteAverage: 8.0),
-            MovieResultModel(id: 2, title: "Test Movie 2", overview: "Test", posterPath: nil, backdropPath: nil, releaseDate: "2024-01-02", voteAverage: 7.5)
+            MovieResultModel(
+                id: 1,
+                posterPath: "",
+                title: "Test Movie 1",
+                voteAverage: 8.0,
+                addedAt: Date(),
+                backdropPath: nil
+            ),
+            MovieResultModel(
+                id: 2,
+                posterPath: "",
+                title: "Test Movie 2",
+                voteAverage: 7.5,
+                addedAt: Date(),
+                backdropPath: nil
+            )
         ]
+
         mockHomeUseCase.nowPlayingMoviesResult = .success(mockMovies)
         presenter.getNowPlayingMovie(page: 1)
         
@@ -52,8 +67,17 @@ final class HomePresenterTest: XCTestCase {
     func testGetTopRatedMovieSuccess() {
         let expectation = XCTestExpectation(description: "Get top rated movies")
         let mockMovies = [
-            MovieResultModel(id: 3, title: "Top Movie", overview: "Test", posterPath: nil, backdropPath: nil, releaseDate: "2024-01-01", voteAverage: 9.0)
+            MovieResultModel(
+                id: 1,
+                posterPath: "",
+                title: "Test Movie 1",
+                voteAverage: 8.0,
+                addedAt: Date(),
+                backdropPath: nil
+            ),
         ]
+        
+
         mockHomeUseCase.topRatedMoviesResult = .success(mockMovies)
         presenter.getTopRatetdMovie(page: 1)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
