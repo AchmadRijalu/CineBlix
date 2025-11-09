@@ -1,62 +1,35 @@
-name: Cineblix Unit Test
+name: CineBlix Unit Test
 run-name: 🚀 ${{ github.actor }} pushed to ${{ github.ref }}
 
 on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   test:
     name: Run Unit Tests
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: List available simulators
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Resolve Swift Packages
         run: |
-          echo "Available iOS Simulators:"
-          xcrun simctl list devices available iOS
-      
+          xcodebuild -resolvePackageDependencies -project CineBlix.xcodeproj
+
       - name: Run Unit Tests
-        id: run_tests
         run: |
+          set -o pipefail
           xcodebuild \
             -project CineBlix.xcodeproj \
-            -scheme CineblixTest \
-            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
-            clean test
-        continue-on-error: true
-      
-      - name: Set test status
-        run: |
-          if [ "${{ steps.run_tests.outcome }}" == "success" ]; then
-            echo "TEST_RESULT=✅ Tests Passed" >> $GITHUB_ENV
-            echo "TEST_EMOJI=🎉" >> $GITHUB_ENV
-          else
-            echo "TEST_RESULT=❌ Tests Failed" >> $GITHUB_ENV
-            echo "TEST_EMOJI=⚠️" >> $GITHUB_ENV
-          fi
-      
-      - name: Send email notification
-        if: always()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "${{ env.TEST_EMOJI }} CineBlix Tests - ${{ github.ref_name }}"
-          to: achmad.rijalu@gmail.com
-          from: GitHub Actions <noreply@github.com>
-          body: |
-            ${{ env.TEST_RESULT }}
-            
-            📦 Repository: ${{ github.repository }}
-            🌿 Branch: ${{ github.ref_name }}
-            👤 Author: ${{ github.actor }}
-            📝 Commit: ${{ github.event.head_commit.message }}
-            
-            🔗 View Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            -scheme CineBlix \
+            -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=latest' \
+            clean test | xcpretty
