@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CommonKit
 
 struct HomeView: View {
     @EnvironmentObject var profilePresenter: ProfilePresenter
@@ -110,7 +111,7 @@ struct NowPlaying: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack{
-                Text("Now Playing")
+                Text(localization.Screen.Home.subtitle)
                 Spacer()
             }
             .foregroundStyle(.white)

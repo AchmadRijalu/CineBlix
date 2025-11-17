@@ -1,0 +1,18 @@
+/*
+  Localizable.strings
+  CommonKit
+
+  Created by Achmad Rijalu on 16/11/25.
+  
+*/
+
+"screen.home.subtitle" = "Now Playing";
+"screen.favorites.title" = "Favorites";
+"screen.about.title" = "About";
+"screen.about.contactme.button.title" = "Contact Me";
+"screen.about.personalwebsite.button.title" = "Personal Website";
+"screen.detailmovie.tab.info.title" = "Info";
+"screen.detailmovie.tab.info.review" = "Review";
+"screen.detailmovie.button.title" = "Visit Official Website";
+"screen.detailmovie.overview.subtitle" = "Overview";
+"screen.detailmovie.companies.subtitle" = "Production Companies";

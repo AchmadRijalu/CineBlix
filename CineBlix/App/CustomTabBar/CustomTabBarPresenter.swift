@@ -9,5 +9,19 @@ import SwiftUI
 
 class CustomTabBarPresenter: ObservableObject {
     @Published var isHidden: Bool = false
-    var depthPage = 0
+    var depth: Int = 0
+    
+    func push() {
+        depth += 1
+        updateVisibility()
+    }
+    
+    func pop() {
+        depth = max(depth - 1, 0)
+        updateVisibility()
+    }
+    
+    private func updateVisibility() {
+        isHidden = depth > 0
+    }
 }

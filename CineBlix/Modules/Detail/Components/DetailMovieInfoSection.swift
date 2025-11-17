@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import CommonKit
 
 struct DetailMovieInfoSection: View {
     
@@ -105,7 +106,7 @@ struct DetailMovieInfoSection: View {
             }, content: {
                 HStack {
                     Image(systemName: "globe")
-                    Text("Visit Official Website")
+                    Text(localization.Screen.Detailmovie.Button.title)
                 }
             }, color: Color("RedColor"))
             .skeleton(
@@ -116,7 +117,7 @@ struct DetailMovieInfoSection: View {
             
             VStack {
                 HStack{
-                    Text("Overview")
+                    Text(localization.Screen.Detailmovie.Overview.subtitle)
                         .foregroundStyle(.white)
                         .font(Font.system(size: 22, weight: .medium))
                     Spacer()
@@ -135,7 +136,7 @@ struct DetailMovieInfoSection: View {
             
             VStack {
                 HStack{
-                    Text("Production Companies")
+                    Text(localization.Screen.Detailmovie.Companies.subtitle)
                         .foregroundStyle(.white)
                         .font(Font.system(size: 22, weight: .medium))
                     Spacer()

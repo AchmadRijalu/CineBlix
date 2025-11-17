@@ -1,0 +1,18 @@
+/* 
+  Localizable.strings
+  CommonKit
+
+  Created by Achmad Rijalu on 16/11/25.
+  
+*/
+
+"screen.home.subtitle" = "Sedang Diputar";
+"screen.favorites.title" = "Favorit";
+"screen.about.title" = "Tentang Saya";
+"screen.about.contactme.button.title" = "Hubungi Saya";
+"screen.about.personalwebsite.button.title" = "Website Pribadi";
+"screen.detailmovie.tab.info.title" = "Info";
+"screen.detailmovie.tab.info.review" = "Ulasan";
+"screen.detailmovie.button.title" = "Kunjungi Website Resmi";
+"screen.detailmovie.overview.subtitle" = "Ikhtisar";
+"screen.detailmovie.companies.subtitle" = "Perusahaan Produksi";

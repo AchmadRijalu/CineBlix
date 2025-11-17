@@ -22,8 +22,12 @@ struct HideTabBarModifier: ViewModifier {
     var hidden: Bool
     
     func body(content: Content) -> some View {
-        content.onAppear {
-            tabBarPresenter.isHidden = hidden
-        }
+        content
+            .onAppear {
+                if hidden { tabBarPresenter.push() }
+            }
+            .onDisappear {
+                if hidden { tabBarPresenter.pop() }
+            }
     }
 }

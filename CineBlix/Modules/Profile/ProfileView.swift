@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import CommonKit
 
 struct ProfileView: View {
     init() {
@@ -20,7 +21,7 @@ struct ProfileView: View {
         NavigationView {
             VStack {
                 HStack {
-                    Image("image-profile").resizable().aspectRatio(contentMode: .fill).frame(width: 200, height: 200)
+                    Image(asset: Asset.imageProfile).resizable().aspectRatio(contentMode: .fill).frame(width: 200, height: 200)
                         .cornerRadius(100)
                 }.padding(.top, 70).padding(.bottom, 16)
                 VStack(spacing: 20) {
@@ -36,7 +37,7 @@ struct ProfileView: View {
                         GeneralButton(action: {
                             SharedMethods().openEmailApp()
                         }, content: {
-                            Text("Contact Me").fontWeight(.medium)
+                            Text(localization.Screen.About.Contactme.Button.title).fontWeight(.medium)
                                     .foregroundColor(.black)
                         }, color: Color("GreenColor"))
                     }.padding(.horizontal, 24)
@@ -44,7 +45,7 @@ struct ProfileView: View {
                         GeneralButton(action: {
                             showWebView.toggle()
                         }, content: {
-                            Text("Personal Website").fontWeight(.medium)
+                            Text(localization.Screen.About.Personalwebsite.Button.title).fontWeight(.medium)
                                     .foregroundColor(Color("BlackColor"))
                         }, color: Color(.white))
                     }.padding(.horizontal, 24)
@@ -52,7 +53,7 @@ struct ProfileView: View {
                 }.padding(.top, 12)
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(SwiftUI.Color("PrimaryColor").edgesIgnoringSafeArea(.all))
-                .navigationTitle("About").navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(localization.Screen.About.title).navigationBarTitleDisplayMode(.inline)
                 .sheet(isPresented: $showWebView) {
                     GeneralWebview(urlString: "https://www.achmadrijalu.com")
                 }

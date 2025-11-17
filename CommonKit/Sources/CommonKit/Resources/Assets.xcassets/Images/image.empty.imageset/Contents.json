@@ -1,15 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "image-movie-default2.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "undraw_void_wez2.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "undraw_void_wez2 1.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

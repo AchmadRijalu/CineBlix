@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CommonKit
 
 struct FavoriteView: View {
     @Environment(\.dismiss) var dismiss
@@ -14,7 +15,7 @@ struct FavoriteView: View {
         VStack {
             GeneralToolBar(action: {
                 dismiss()
-            }, title: "Favorites")
+            }, title: localization.Screen.Favorites.title)
             GeometryReader { geo in
                 VStack {
                     ForEach(favoritePresenter.favoriteMovies, id: \.id) { movieData in
