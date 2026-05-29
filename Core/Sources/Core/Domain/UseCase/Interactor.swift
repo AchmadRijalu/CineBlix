@@ -7,15 +7,19 @@
 
 import Combine
 
-public struct Interactor<Request, Response, R: Repository>: UseCase where R.Request == Request, R.Response == Response {
-    
-    private let _repository: R
-    
+public struct Interactor<Request, Response, R: Repository>: UseCase
+where R.Request == Request, R.Response == Response {
+
+    private let repository: R
+
     public init(repository: R) {
-        self._repository = repository
+        self.repository = repository
     }
-    
+
     public func execute(request: Request?) -> AnyPublisher<Response, Error> {
-        _repository.execute(request: request)
+        repository.execute(request: request)
     }
 }
+
+public typealias ListInteractor<Request, Item, R: Repository> = Interactor<Request, [Item], R>
+where R.Request == Request, R.Response == [Item]

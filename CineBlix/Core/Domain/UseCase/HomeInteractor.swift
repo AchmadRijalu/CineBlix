@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Core
 
 protocol HomeUseCase {
     func getNowPlayingMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error>
