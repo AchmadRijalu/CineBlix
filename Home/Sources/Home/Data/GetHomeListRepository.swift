@@ -1,51 +1,89 @@
 //
-//  Home.swift
+//  GetHomeListRepository.swift
 //  Home
-//
-//  Created by Achmad Rijalu on 29/11/25.
 //
 
 import Core
 import Combine
 
-public struct GetHomeListRepository<GetHomeListLocaleDataSource: LocaleDataSource, GetHomeListRemoteDataSource: DataSource, Transformer: Mapper>: Repository where GetHomeListLocaleDataSource.Response == HomeMovieEntity, GetHomeListRemoteDataSource.Response == MoviesResponse, Transformer.Response == [MoviesResultResponse], Transformer.Domain == [MovieResultModel], Transformer.Entity == [HomeMovieEntity] {
-    
-    public typealias Request = Any
-    
+public struct GetHomeListRepository<
+    Locale: LocaleDataSource,
+    Remote: DataSource,
+    Transformer: Mapper
+>: Repository
+where
+    Locale.Request == HomeListRequest,
+    Locale.Response == HomeMovieEntity,
+    Remote.Request == HomeListRequest,
+    Remote.Response == MoviesResponse,
+    Transformer.Response == [MoviesResultResponse],
+    Transformer.Domain == [MovieResultModel],
+    Transformer.Entity == [HomeMovieEntity] {
+
+    public typealias Request = HomeListRequest
     public typealias Response = [MovieResultModel]
-    
-    private let _localeDataSource: GetHomeListLocaleDataSource
-    private let _remoteDataSource: GetHomeListRemoteDataSource
-    private let _mapper: Transformer
-    
-    public init(_localeDataSource: GetHomeListLocaleDataSource, _remoteDataSource: GetHomeListRemoteDataSource, _mapper: Transformer) {
-        self._localeDataSource = _localeDataSource
-        self._remoteDataSource = _remoteDataSource
-        self._mapper = _mapper
+
+    private let localeDataSource: Locale
+    private let remoteDataSource: Remote
+    private let mapper: Transformer
+
+    public init(
+        localeDataSource: Locale,
+        remoteDataSource: Remote,
+        mapper: Transformer
+    ) {
+        self.localeDataSource = localeDataSource
+        self.remoteDataSource = remoteDataSource
+        self.mapper = mapper
     }
-    
-    
-    public func execute(request: Request?) -> AnyPublisher<[MovieResultModel], any Error> {
-        return self._localeDataSource.list(request: nil).flatMap { movieEntities -> AnyPublisher<[MovieResultModel], Error> in
-            if movieEntities.isEmpty {
-                return self._remoteDataSource.execute(request: nil).map { moviesResponse in
-                    _mapper.transformResponseToEntity(response: moviesResponse.results)
-                }.flatMap { movieEntities in
-                    self._localeDataSource.add(entities: movieEntities)
+
+    public func execute(request: HomeListRequest?) -> AnyPublisher<[MovieResultModel], any Error> {
+        guard let request else {
+            return Fail(error: URLError.invalidResponse).eraseToAnyPublisher()
+        }
+
+        if !request.usesCache {
+            return fetchFromRemote(request: request)
+        }
+
+        return localeDataSource.list(request: request).flatMap { [self] entities -> AnyPublisher<[MovieResultModel], Error> in
+            if entities.isEmpty {
+                return fetchFromRemoteAndCache(request: request)
+            }
+            return Just(mapper.transformEntityToDomain(entity: entities))
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
+        }
+        .eraseToAnyPublisher()
+    }
+
+    private func fetchFromRemote(request: HomeListRequest) -> AnyPublisher<[MovieResultModel], Error> {
+        remoteDataSource.execute(request: request)
+            .map { [mapper] response in
+                mapper.transformResponseToDomain(response: response.results)
+            }
+            .eraseToAnyPublisher()
+    }
+
+    private func fetchFromRemoteAndCache(request: HomeListRequest) -> AnyPublisher<[MovieResultModel], Error> {
+        remoteDataSource.execute(request: request)
+            .map { [mapper] response in
+                var entities = mapper.transformResponseToEntity(response: response.results)
+                for index in entities.indices {
+                    entities[index].listType = request.listType
                 }
-                .filter { $0 }
-                .flatMap { _ in self._localeDataSource.list(request: nil)
-                .map { movieEntities in
-                    _mapper.transformEntityToDomain(entity: movieEntities)}
-                }.eraseToAnyPublisher()
+                return entities
             }
-            else {
-                return self._localeDataSource.list(request: nil).map { movieEntities in
-                    _mapper.transformEntityToDomain(entity: movieEntities)
-                }.eraseToAnyPublisher()
+            .flatMap { [localeDataSource, mapper] entities in
+                localeDataSource.add(entities: entities)
+                    .filter { $0 }
+                    .flatMap { _ in
+                        localeDataSource.list(request: request)
+                            .map { cached in
+                                mapper.transformEntityToDomain(entity: cached)
+                            }
+                    }
             }
-        }.eraseToAnyPublisher()
+            .eraseToAnyPublisher()
     }
-    
-    
 }

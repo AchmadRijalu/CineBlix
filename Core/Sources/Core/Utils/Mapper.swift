@@ -15,3 +15,9 @@ public protocol Mapper {
     func transformResponseToEntity(response: Response) -> Entity
     func transformEntityToDomain(entity: Entity) -> Domain
 }
+
+public extension Mapper {
+    func transformResponseToDomain(response: Response) -> Domain {
+        transformEntityToDomain(entity: transformResponseToEntity(response: response))
+    }
+}

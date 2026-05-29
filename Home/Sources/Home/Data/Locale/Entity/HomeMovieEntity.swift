@@ -14,7 +14,8 @@ public class HomeMovieEntity: Object {
     @objc dynamic var posterPath: String = ""
     @objc dynamic var voteAverage: Double = 0
     @objc dynamic var backdropPath: String = ""
-    
+    @objc dynamic var listType: String = ""
+
     public override class func primaryKey() -> String? {
         return "id"
     }

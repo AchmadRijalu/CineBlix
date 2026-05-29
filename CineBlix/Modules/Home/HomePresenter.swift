@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 import Combine
+import Core
 
 class HomePresenter: ObservableObject {
-    private let router =  HomeRouter()
+    private let router = HomeRouter()
     private let homeUseCase: HomeUseCase
     private var cancellables : Set<AnyCancellable> = []
     

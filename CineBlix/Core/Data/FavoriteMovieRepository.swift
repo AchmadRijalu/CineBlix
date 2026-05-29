@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Core
 
 protocol FavoriteMovieRepositoryProtocol: AnyObject {
     func getAllFavoritesMovies() -> AnyPublisher<[MovieResultModel], Error>

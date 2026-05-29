@@ -6,6 +6,7 @@
 //
 
 import Realm
+import Core
 
 final class FavoriteMovieMapper {
     static func mapFavoriteMovieEntitytoDomain(_ entity: [FavoriteEntity]) -> [MovieResultModel] {

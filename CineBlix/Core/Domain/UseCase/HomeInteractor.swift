@@ -2,31 +2,53 @@
 //  HomeInteractor.swift
 //  CineBlix
 //
-//  Created by Achmad Rijalu on 06/12/24.
-//
 
-import Foundation
 import Combine
 import Core
+import Home
 
 protocol HomeUseCase {
     func getNowPlayingMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error>
     func getTopRatedMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error>
 }
 
-class HomeInteractor: HomeUseCase {
-    
-    private let repository: HomeRepositoryProtocol
-    
-     init(repository: HomeRepositoryProtocol) {
-        self.repository = repository
+typealias HomeMovieListRepository = GetHomeListRepository<
+    GetHomeListLocaleDataSource,
+    GetHomeListRemoteDataSource,
+    MovieResultTransformer
+>
+
+typealias HomeMovieListInteractor = Interactor<
+    HomeListRequest,
+    [MovieResultModel],
+    HomeMovieListRepository
+>
+
+final class HomeInteractor: HomeUseCase {
+
+    private let listUseCase: HomeMovieListInteractor
+
+    init(listUseCase: HomeMovieListInteractor) {
+        self.listUseCase = listUseCase
     }
-    
-    func getNowPlayingMovies(page: Int) -> AnyPublisher<[MovieResultModel], any Error> {
-        return repository.getNowPlayingMovies(page: page)
+
+    func getNowPlayingMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error> {
+        listUseCase.execute(
+            request: HomeListRequest(
+                endpointURL: Endpoints.Gets.movieNowPlaying(page: page).url,
+                listType: HomeListRequest.nowPlayingListType,
+                usesCache: true
+            )
+        )
     }
-    
-    func getTopRatedMovies(page: Int) -> AnyPublisher<[MovieResultModel], any Error> {
-        return repository.getTopRatedMovies(page: page)
+
+    func getTopRatedMovies(page: Int) -> AnyPublisher<[MovieResultModel], Error> {
+        listUseCase.execute(
+            request: HomeListRequest(
+                endpointURL: Endpoints.Gets.movieTopRated(page: page).url,
+                listType: "top_rated",
+                usesCache: false
+            )
+        )
     }
 }

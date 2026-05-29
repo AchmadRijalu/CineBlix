@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Core
 
 protocol DetailMovieRepositoryProtocol: AnyObject {
     func getDetailMovieInfo(movieId: Int) -> AnyPublisher<DetailMovieModel, Error>

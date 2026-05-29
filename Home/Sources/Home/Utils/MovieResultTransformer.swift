@@ -35,17 +35,18 @@ public struct MovieResultTransformer: Mapper {
     public func transformEntityToDomain(
         entity: [HomeMovieEntity]
     ) -> [MovieResultModel] {
-        return entity
-            .map { result in
-                return MovieResultModel(
-                    id: result.id,
-                    posterPath: result.posterPath,
-                    title: result.title,
-                    voteAverage: result.voteAverage,
-                    addedAt: nil,
-                    backdropPath: result.backdropPath
-                )
-        }
+        entity.map(mapEntity)
     }
-    
+
+    private func mapEntity(_ result: HomeMovieEntity) -> MovieResultModel {
+        MovieResultModel(
+            id: result.id,
+            posterPath: result.posterPath,
+            title: result.title,
+            voteAverage: result.voteAverage,
+            addedAt: nil,
+            backdropPath: result.backdropPath
+        )
+    }
 }
+

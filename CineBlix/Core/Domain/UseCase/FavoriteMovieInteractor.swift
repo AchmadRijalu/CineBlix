@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Core
 
 protocol FavoriteMovieUseCase: AnyObject {
     func fetchFavoriteMovies() -> AnyPublisher<[MovieResultModel], Error>
