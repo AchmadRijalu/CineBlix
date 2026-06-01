@@ -38,11 +38,13 @@ class FavoritePresenter: ObservableObject {
     }
     
     func navigateToDetailMovie<Content: View>(movieId: Int, @ViewBuilder content: () -> Content) -> some View {
-        return NavigationLink {
-            router.createDetailMovieView(movieId: movieId)
-        } label: {
+        NavigationLink(
+            destination: DeferredView { self.router.createDetailMovieView(movieId: movieId) }
+        ) {
             content()
+                .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
     }
     
     func deleteFavoriteMovie(movieId: Int) {

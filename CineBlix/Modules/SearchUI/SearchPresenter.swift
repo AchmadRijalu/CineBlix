@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import Search
 
 class SearchPresenter: ObservableObject {
     
@@ -32,6 +33,7 @@ class SearchPresenter: ObservableObject {
             case .finished:
                 self.searchLoadingState = false
             case .failure(let error):
+                self.searchLoadingState = false
                 let errorMessage = String(describing: error)
                 self.presentGeneralError(errorMessage: errorMessage)
             }
@@ -42,24 +44,17 @@ class SearchPresenter: ObservableObject {
     }
     
     func presentGeneralError(errorMessage: String) {
-        let bottomSheetTransitionDelegate = BottomSheetTransitionDelegate()
-        let sheetVC = APIErrorBottomSheet(image: UIImage(systemName: "exclamationmark.triangle"), title: "Ooopss.", message: errorMessage)
-        
-        sheetVC.modalPresentationStyle = .custom
-        sheetVC.transitioningDelegate = bottomSheetTransitionDelegate
-        
-        if let topVC = UIApplication.shared.topViewController() {
-            topVC.present(sheetVC, animated: true)
-        }
+        ErrorBottomSheetPresenter.present(message: errorMessage)
     }
-    
-    func navigateToDetailMovie<Content: View>(movieId: Int, @ViewBuilder content: () -> Content ) -> some View {
-        NavigationLink {
-            searchMovieRouter.createDetailMovie(movieId: movieId)
-        } label: {
-            content()
-        }
 
+    func navigateToDetailMovie<Content: View>(movieId: Int, @ViewBuilder content: () -> Content) -> some View {
+        NavigationLink(
+            destination: DeferredView { self.searchMovieRouter.createDetailMovie(movieId: movieId) }
+        ) {
+            content()
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 extension SearchPresenter {
@@ -69,6 +64,7 @@ extension SearchPresenter {
             guard let self = self else { return }
             if queryData.isEmpty {
                 self.searchMovieList = []
+                self.searchLoadingState = false
             }
             else {
                 self.fetchSearchMovie(query: queryData, page: 1)

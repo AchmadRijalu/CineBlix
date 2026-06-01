@@ -2,6 +2,8 @@
 //  GetHomeListLocaleDataSource.swift
 //  Home
 //
+//  Created by Achmad Rijalu on 29/05/26.
+//
 
 import Core
 import Combine
@@ -19,7 +21,7 @@ public struct GetHomeListLocaleDataSource: LocaleDataSource {
         self.realm = _realm
     }
 
-    public func list(request: HomeListRequest?) -> AnyPublisher<[HomeMovieEntity], any Error> {
+    public func list(request: HomeListRequest?) -> AnyPublisher<[HomeMovieEntity], Error> {
         let listType = request?.listType ?? HomeListRequest.nowPlayingListType
         return Future<[HomeMovieEntity], Error> { completion in
             let movies = realm.objects(HomeMovieEntity.self)
@@ -46,11 +48,11 @@ public struct GetHomeListLocaleDataSource: LocaleDataSource {
         .eraseToAnyPublisher()
     }
 
-    public func get(id: String) -> AnyPublisher<HomeMovieEntity, any Error> {
+    public func get(id: String) -> AnyPublisher<HomeMovieEntity, Error> {
         fatalError("Not implemented")
     }
 
-    public func update(id: String, entities: HomeMovieEntity) -> AnyPublisher<Bool, any Error> {
+    public func update(id: String, entities: HomeMovieEntity) -> AnyPublisher<Bool, Error> {
         fatalError("Not implemented")
     }
 }

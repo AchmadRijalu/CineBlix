@@ -2,6 +2,8 @@
 //  GetHomeListRepository.swift
 //  Home
 //
+//  Created by Achmad Rijalu on 29/05/26.
+//
 
 import Core
 import Combine
@@ -37,9 +39,9 @@ where
         self.mapper = mapper
     }
 
-    public func execute(request: HomeListRequest?) -> AnyPublisher<[MovieResultModel], any Error> {
+    public func execute(request: HomeListRequest?) -> AnyPublisher<[MovieResultModel], Error> {
         guard let request else {
-            return Fail(error: URLError.invalidResponse).eraseToAnyPublisher()
+            return Fail(error: Core.URLError.invalidResponse).eraseToAnyPublisher()
         }
 
         if !request.usesCache {

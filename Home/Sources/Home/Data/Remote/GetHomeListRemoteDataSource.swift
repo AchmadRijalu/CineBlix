@@ -2,10 +2,12 @@
 //  GetHomeListRemoteDataSource.swift
 //  Home
 //
+//  Created by Achmad Rijalu on 29/05/26.
+//
 
-import Core
 import Alamofire
 import Combine
+import Core
 import Foundation
 
 public struct GetHomeListRemoteDataSource: DataSource {
@@ -15,9 +17,9 @@ public struct GetHomeListRemoteDataSource: DataSource {
 
     public init() {}
 
-    public func execute(request: HomeListRequest?) -> AnyPublisher<MoviesResponse, any Error> {
+    public func execute(request: HomeListRequest?) -> AnyPublisher<MoviesResponse, Error> {
         guard let request, let url = URL(string: request.endpointURL) else {
-            return Fail(error: URLError.invalidResponse).eraseToAnyPublisher()
+            return Fail(error: Core.URLError.invalidResponse).eraseToAnyPublisher()
         }
 
         return Future<MoviesResponse, Error> { completion in
@@ -26,7 +28,7 @@ public struct GetHomeListRemoteDataSource: DataSource {
                 case .success(let value):
                     completion(.success(value))
                 case .failure:
-                    completion(.failure(URLError.invalidResponse))
+                    completion(.failure(Core.URLError.invalidResponse))
                 }
             }
         }.eraseToAnyPublisher()

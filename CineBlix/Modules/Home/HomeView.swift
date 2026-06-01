@@ -49,21 +49,22 @@ struct HomeView: View {
                                 .clipShape(Circle()).tint(.black)
                             }
                             ToolbarItem(placement: .topBarTrailing) {
-                                homePresenter.navigateToFavoriteView(content: {
+                                homePresenter.navigateToFavoriteView {
                                     Image(systemName: "bookmark.fill")
                                         .resizable()
                                         .scaledToFill()
-                                        .foregroundStyle(Color("SecondaryColor")).padding(4)
-                                })
+                                        .foregroundStyle(Color("SecondaryColor"))
+                                        .padding(4)
+                                }
                                 .buttonStyle(.borderedProminent)
-                                .clipShape(Circle()).tint(.black)
-                        }
+                                .clipShape(Circle())
+                                .tint(.black)
+                            }
                     }
                 }
             }
         }.onAppear {
-            homePresenter.getTopRatetdMovie(page: 1)
-            homePresenter.getNowPlayingMovie(page: 1)
+            homePresenter.loadInitialMoviesIfNeeded()
         }
     }
 }

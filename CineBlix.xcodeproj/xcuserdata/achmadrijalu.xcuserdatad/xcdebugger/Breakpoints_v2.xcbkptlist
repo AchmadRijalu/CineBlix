@@ -144,7 +144,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "36"
             endingLineNumber = "36"
-            landmarkName = "getNowPlayingMovie(page:)"
+            landmarkName = "loadInitialMoviesIfNeeded()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -247,22 +247,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "987CB786-AAC7-4B95-A297-26913467E856"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "CineBlix/App/MainTabbar.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "body"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "99414E21-A2EF-4F3D-879C-9FE5DB65DBCF"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -288,7 +272,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
             endingLineNumber = "38"
-            landmarkName = "getNowPlayingMovie(page:)"
+            landmarkName = "loadInitialMoviesIfNeeded()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -304,7 +288,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
             endingLineNumber = "51"
-            landmarkName = "getTopRatetdMovie(page:)"
+            landmarkName = "getNowPlayingMovie(page:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -320,7 +304,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "getTopRatetdMovie(page:)"
+            landmarkName = "getNowPlayingMovie(page:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -338,6 +322,22 @@
             endingLineNumber = "25"
             landmarkName = "getNowPlayingMovies(page:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2A6401EE-2E6E-40BD-9AE4-13C8BB7FCC7B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CineBlix/Core/DI/Injection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "Injection"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

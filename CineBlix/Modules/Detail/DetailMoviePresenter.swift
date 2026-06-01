@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 import SkeletonUI
 import Core
+import DetailMovie
 
 enum DetailMovieContent: CaseIterable, Identifiable{
     var id: Self {self}

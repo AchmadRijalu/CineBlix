@@ -1,5 +1,5 @@
 {
-  "originHash" : "88b4a07caf34201d436f146972323ea4a324e3995578abfd852e1f813515d478",
+  "originHash" : "4cf24ec33ad9e9cdf4a2837fbe9987a865d7f8d703204fc2bc378fb4d3996493",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "7595cbcf59809f9977c5f6378500de2ad73b7ddb",
         "version" : "5.12.0"
-      }
-    },
-    {
-      "identity" : "kingfisher",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/onevcat/Kingfisher.git",
-      "state" : {
-        "revision" : "cf8be20d07654570554c8a8a4952bc8a5766a8b0",
-        "version" : "8.9.0"
       }
     },
     {
@@ -35,51 +26,6 @@
       "state" : {
         "revision" : "54eebd2b5e7a4a8055a7a8b55ac859a48462d722",
         "version" : "10.54.5"
-      }
-    },
-    {
-      "identity" : "skeletonui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CSolanaM/SkeletonUI",
-      "state" : {
-        "revision" : "f025e9ba5d051374d7344efa8859df5b9399a181",
-        "version" : "2.0.2"
-      }
-    },
-    {
-      "identity" : "swift-custom-dump",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-custom-dump",
-      "state" : {
-        "revision" : "b9b59eb58c946236d6f16305c576ad194c36444e",
-        "version" : "1.6.0"
-      }
-    },
-    {
-      "identity" : "swift-snapshot-testing",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
-      "state" : {
-        "revision" : "ad5e3190cc63dc288f28546f9c6827efc1e9d495",
-        "version" : "1.19.2"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-syntax",
-      "state" : {
-        "revision" : "9de99a78f099e59caf2b2beec65a4c45d54b2081",
-        "version" : "603.0.1"
-      }
-    },
-    {
-      "identity" : "xctest-dynamic-overlay",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
-      "state" : {
-        "revision" : "dfd70507def84cb5fb821278448a262c6ff2bbad",
-        "version" : "1.9.0"
       }
     }
   ],

@@ -8,73 +8,101 @@
 import UIKit
 
 class APIErrorBottomSheet: UIViewController {
-    
+
+    var onDismiss: (() -> Void)?
+    private var didUpdatePreferredContentSize = false
+
     private lazy var dismissButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("", for: .normal)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.tintColor = .systemGray
         button.addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var imageView: UIImageView = {
-        let imageView = UIImageView(frame: .zero)
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        imageView.tintColor = UIColor(named: "PrimaryColor") ?? .systemBlue
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
+
     private lazy var titleLabel: UILabel = {
-       let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 17, weight: .medium)
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .semibold)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var messageLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15, weight: .regular)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = .systemGray
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    lazy var verticalStackView: UIStackView = {
-        let stackView = UIStackView(frame: .zero)
+
+    private lazy var verticalStackView: UIStackView = {
+        let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = 12
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
         return stackView
     }()
-    
+
+    init(image: UIImage?, title: String?, message: String?) {
+        super.init(nibName: nil, bundle: nil)
+        imageView.image = image
+        titleLabel.text = title
+        messageLabel.text = message
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
-    
-    init(image: UIImage?, title: String?, message: String?) {
-        super.init(nibName: nil, bundle: nil)
-        setupView()
-        self.imageView.image = image
-        self.titleLabel.text = title
-        self.messageLabel.text = message
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updatePreferredContentSizeIfNeeded()
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     @objc private func dismissTapped() {
+        onDismiss?()
         dismiss(animated: true)
+    }
+
+    private func updatePreferredContentSizeIfNeeded() {
+        guard !didUpdatePreferredContentSize else { return }
+        didUpdatePreferredContentSize = true
+
+        let width = UIScreen.main.bounds.width
+        view.bounds.size = CGSize(width: width, height: 1)
+        view.setNeedsLayout()
+        view.layoutIfNeeded()
+
+        let height = view.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        ).height
+
+        preferredContentSize = CGSize(width: width, height: height)
     }
 }
 
@@ -82,26 +110,29 @@ extension APIErrorBottomSheet {
     private func setupView() {
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.masksToBounds = true
-        
+
         view.addSubview(dismissButton)
-        NSLayoutConstraint.activate([
-            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
-            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            dismissButton.widthAnchor.constraint(equalToConstant: 32),
-            dismissButton.heightAnchor.constraint(equalToConstant: 32)
-        ])
         view.addSubview(verticalStackView)
-        NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
-            verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            verticalStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -24),
-        ])
 
         verticalStackView.addArrangedSubview(imageView)
         verticalStackView.addArrangedSubview(titleLabel)
         verticalStackView.addArrangedSubview(messageLabel)
-        verticalStackView.spacing = 12
+
+        NSLayoutConstraint.activate([
+            dismissButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            dismissButton.widthAnchor.constraint(equalToConstant: 32),
+            dismissButton.heightAnchor.constraint(equalToConstant: 32),
+
+            imageView.widthAnchor.constraint(equalToConstant: 72),
+            imageView.heightAnchor.constraint(equalToConstant: 72),
+
+            verticalStackView.topAnchor.constraint(equalTo: dismissButton.bottomAnchor, constant: 8),
+            verticalStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            verticalStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
+            verticalStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -32),
+        ])
     }
 }
