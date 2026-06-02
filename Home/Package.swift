@@ -22,7 +22,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.2")),
-        .package(url: "https://github.com/realm/realm-swift", exact: "10.54.5"),
+        .package(url: "https://github.com/realm/realm-swift", exact: "20.0.4"),
         .package(path: "../Core"),
 
     ],
