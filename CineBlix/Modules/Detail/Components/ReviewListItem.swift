@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import DetailMovie
 
 struct ReviewListItem: View {
     var detailMovieReviewModel: DetailMovieReviewModel

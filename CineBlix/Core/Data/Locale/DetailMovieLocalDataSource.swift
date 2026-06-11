@@ -8,6 +8,7 @@
 import RealmSwift
 import Foundation
 import Combine
+import Core
 
 protocol DetailMovieLocalDataSourceProcol {
     func addMovieToFavorite(_ movieResult: MovieResultModel) -> AnyPublisher<Bool,Error>

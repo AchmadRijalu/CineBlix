@@ -1,0 +1,21 @@
+xcassets:
+  inputs:
+    - Sources/CommonKit/Resources/Assets.xcassets
+  outputs:
+    templatePath: Assets-NoSwiftUI.stencil
+    output: Sources/CommonKit/Generated/Assets.swift
+    params:
+      bundle: Bundle.module
+      publicAccess: true
+
+
+strings:
+  inputs:
+    - Sources/CommonKit/Resources/Localization/en.lproj/Localizable.strings
+  outputs:
+    templateName: structured-swift5
+    output: Sources/CommonKit/Generated/Strings.swift
+    params:
+      enumName: localization
+      bundle: Bundle.module
+      publicAccess: true

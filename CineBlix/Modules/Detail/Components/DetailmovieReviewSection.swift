@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SkeletonUI
+import DetailMovie
 
 struct DetailmovieReviewSection: View {
     @ObservedObject var detailMoviePresenter: DetailMoviePresenter

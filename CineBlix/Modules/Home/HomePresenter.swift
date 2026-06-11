@@ -8,11 +8,13 @@
 import Foundation
 import SwiftUI
 import Combine
+import Core
 
 class HomePresenter: ObservableObject {
-    private let router =  HomeRouter()
+    private let router = HomeRouter()
     private let homeUseCase: HomeUseCase
     private var cancellables : Set<AnyCancellable> = []
+    private var didLoadInitialMovies = false
     
     @Published var movieNowPlayingResultsModel: [MovieResultModel] = []
     @Published var moviePopularResultsModel: [MovieResultModel] = []
@@ -28,7 +30,15 @@ class HomePresenter: ObservableObject {
         self.homeUseCase = homeUseCase
     }
     
+    func loadInitialMoviesIfNeeded() {
+        guard !didLoadInitialMovies else { return }
+        didLoadInitialMovies = true
+        getTopRatetdMovie(page: 1)
+        getNowPlayingMovie(page: 1)
+    }
+
     func getNowPlayingMovie(page: Int) {
+        guard !nowPlayingLoadingState else { return }
         nowPlayingLoadingState = true
         homeUseCase.getNowPlayingMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
@@ -44,6 +54,7 @@ class HomePresenter: ObservableObject {
     }
     
     func getTopRatetdMovie(page: Int) {
+        guard !topRatedLoadingState else { return }
         topRatedLoadingState = true
         homeUseCase.getTopRatedMovies(page: page).receive(on: DispatchQueue.main).sink { completion in
             switch completion {
@@ -59,17 +70,21 @@ class HomePresenter: ObservableObject {
 
     }
     
-    //MARK: - Router
-    func navigateToDetailView<Content: View>(with id: Int, @ViewBuilder content: () -> Content ) -> some View {
-        NavigationLink(destination: router.createDetailMovieView(movieId: id)) {
+
+    func navigateToDetailView<Content: View>(with id: Int, @ViewBuilder content: () -> Content) -> some View {
+        NavigationLink(
+            destination: DeferredView { self.router.createDetailMovieView(movieId: id) }
+        ) {
             content()
         }
+        .buttonStyle(.plain)
     }
-    
+
     func navigateToFavoriteView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-        NavigationLink(destination: router.createFavoriteMovieView()) {
+        NavigationLink(
+            destination: DeferredView { self.router.createFavoriteMovieView() }
+        ) {
             content()
-            
         }
     }
 }

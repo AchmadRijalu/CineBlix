@@ -4,5 +4,10 @@
 <dict>
 	<key>API_KEY</key>
 	<string>d2aa1285de7e6ebda80b77de81c67b01</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>Indonesia</string>
+	</array>
 </dict>
 </plist>

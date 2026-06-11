@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CommonKit
 
 struct HomeView: View {
     @EnvironmentObject var profilePresenter: ProfilePresenter
@@ -48,21 +49,22 @@ struct HomeView: View {
                                 .clipShape(Circle()).tint(.black)
                             }
                             ToolbarItem(placement: .topBarTrailing) {
-                                homePresenter.navigateToFavoriteView(content: {
+                                homePresenter.navigateToFavoriteView {
                                     Image(systemName: "bookmark.fill")
                                         .resizable()
                                         .scaledToFill()
-                                        .foregroundStyle(Color("SecondaryColor")).padding(4)
-                                })
+                                        .foregroundStyle(Color("SecondaryColor"))
+                                        .padding(4)
+                                }
                                 .buttonStyle(.borderedProminent)
-                                .clipShape(Circle()).tint(.black)
-                        }
+                                .clipShape(Circle())
+                                .tint(.black)
+                            }
                     }
                 }
             }
         }.onAppear {
-            homePresenter.getTopRatetdMovie(page: 1)
-            homePresenter.getNowPlayingMovie(page: 1)
+            homePresenter.loadInitialMoviesIfNeeded()
         }
     }
 }
@@ -110,7 +112,7 @@ struct NowPlaying: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack{
-                Text("Now Playing")
+                Text(localization.Screen.Home.subtitle)
                 Spacer()
             }
             .foregroundStyle(.white)

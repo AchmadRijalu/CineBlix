@@ -7,55 +7,49 @@
 
 import Foundation
 import RealmSwift
+import Core
+import Home
+import Search
+import DetailMovie
+import Favorite
+import UIKit
 
 final class Injection: NSObject {
-    
-    //MARK: - Repository Injection
-    private func provideMovieRepository() -> HomeRepositoryProtocol {
-        let realm = try? Realm()
-        
-        let locale: HomeLocaleDataSource = HomeLocaleDataSource.sharedInstance(realm)
-        let remote: HomeRemoteDataSource = HomeRemoteDataSource.sharedInstance
-        
-        return HomeRepository.sharedInstance(locale, remote)
-    }
-    
-    private func provideDetailMovieRepository() -> DetailMovieRepositoryProtocol {
-        let realm = try? Realm()
-        let locale: DetailMovieLocalDataSource = DetailMovieLocalDataSource(realm: realm)
-        let remote: DetailMovieRemoteDataSource = DetailMovieRemoteDataSource()
-        
-        return DetailMovieRepository.sharedInstance(remote, locale)
-    }
-    
-    private func provideSearchMovieRepository() -> SearchMovieRepositoryProtocol {
-        let remote: SearchMovieRemoteDataSource = SearchMovieRemoteDataSource()
-        return SearchMovieRepository.sharedInstance(remote)
-    }
-    
-    private func provideFavoriteMovieRepository() -> FavoriteMovieRepositoryProtocol {
-        let realm = try? Realm()
-        let locale: FavoriteMovieLocaleDataSource = FavoriteMovieLocaleDataSource(realm: realm)
-        return FavoriteMovieRepository.sharedInstance(locale)
-    }
-    
+
+    private let realm = try? Realm()
+
     func provideHome() -> HomeUseCase {
-        let repository = provideMovieRepository()
-        return HomeInteractor(repository: repository)
+        let locale = GetHomeListLocaleDataSource(_realm: realm!)
+        let remote = GetHomeListRemoteDataSource()
+        let mapper = MovieResultTransformer()
+        let repository = GetHomeListRepository(
+            localeDataSource: locale,
+            remoteDataSource: remote,
+            mapper: mapper
+        )
+        let listUseCase = Interactor(repository: repository)
+        return HomeInteractor(listUseCase: listUseCase)
     }
-    
-    func provideDetailMovie() -> DetailMovieUseCase {
-        let repository = provideDetailMovieRepository()
-        return DetailMovieInteractor(repository: repository)
-    }
-    
+
     func provideSearchMovie() -> SearchMovieUserCase {
-        let repository = provideSearchMovieRepository()
-        return SearchMovieInteractor(repository: repository)
+        let repository = GetSearchRepository(
+            remoteDataSource: GetSearchRemoteDataSource()
+        )
+        return SearchMovieInteractor(useCase: Interactor(repository: repository))
     }
-    
+
+    func provideDetailMovie() -> DetailMovieUseCase {
+        let repository = GetDetailMovieRepository(
+            remoteDataSource: GetDetailMovieRemoteDataSource(),
+            localeDataSource: DetailMovieFavoriteLocalDataSource(realm: realm!)
+        )
+        return DetailMovieInteractor(useCase: Interactor(repository: repository))
+    }
+
     func provideFavoriteMovie() -> FavoriteMovieUseCase {
-        let repository = provideFavoriteMovieRepository()
-        return FavoriteMovieInteractor(repository: repository)
+        let repository = GetFavoriteRepository(
+            localeDataSource: GetFavoriteLocaleDataSource(realm: realm!)
+        )
+        return FavoriteMovieInteractor(useCase: Interactor(repository: repository))
     }
 }
